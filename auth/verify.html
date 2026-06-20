@@ -31,13 +31,12 @@ Z+
 
 
 <p>
-Enter the verification code sent to your phone
+Enter the 6-digit code sent to your phone
 </p>
 
 
 
 <form id="verifyForm">
-
 
 
 <div class="input-group">
@@ -67,8 +66,8 @@ Verify
 </form>
 
 
-</div>
 
+</div>
 
 </div>
 
@@ -78,22 +77,12 @@ Verify
 <script type="module">
 
 
-import { auth } from "../firebase/firebase.js";
-
-
-import {
-    PhoneAuthProvider,
-    signInWithCredential
-} from 
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+const verifyForm = 
+document.getElementById("verifyForm");
 
 
 
-const form = document.getElementById("verifyForm");
-
-
-
-form.addEventListener("submit", async (e)=>{
+verifyForm.addEventListener("submit", async (e)=>{
 
 
 e.preventDefault();
@@ -115,21 +104,34 @@ return;
 
 
 
+// Check if OTP session exists
+
+const confirmationResult =
+window.confirmationResult;
+
+
+
+if(!confirmationResult){
+
+
+alert("OTP session expired. Please login again.");
+
+
+window.location.href="login.html";
+
+
+return;
+
+
+}
+
+
+
+
 try{
 
 
-const credential =
-PhoneAuthProvider.credential(
-window.verificationId,
-otp
-);
-
-
-
-await signInWithCredential(
-auth,
-credential
-);
+await confirmationResult.confirm(otp);
 
 
 
@@ -146,7 +148,7 @@ window.location.href="profile.html";
 catch(error){
 
 
-alert(error.message);
+alert("Invalid verification code");
 
 
 }
@@ -154,6 +156,7 @@ alert(error.message);
 
 
 });
+
 
 
 </script>
