@@ -1,25 +1,41 @@
 // ===================================
-// ZSWAP PLUS - CONTACTS WITH ONLINE STATUS
+// ZSWAP PLUS - CONTACTS WITH PROFILE IMAGE
 // ===================================
+
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-import {
-onAuthStateChanged
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
+
+onAuthStateChanged
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+
 doc,
 getDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
 
 
 const contactsBox =
 document.getElementById("contacts");
+
+
 
 
 
@@ -36,6 +52,8 @@ return;
 
 
 
+
+
 const userSnap = await getDoc(
 
 doc(db,"users",user.uid)
@@ -44,7 +62,10 @@ doc(db,"users",user.uid)
 
 
 
+
+
 if(userSnap.exists()){
+
 
 
 const contacts =
@@ -56,18 +77,25 @@ contactsBox.innerHTML="";
 
 
 
+
+
 if(contacts.length === 0){
+
 
 contactsBox.innerHTML =
 "No contacts added yet";
 
+
 return;
+
 
 }
 
 
 
-contacts.forEach(async(contact)=>{
+
+
+for(const contact of contacts){
 
 
 
@@ -83,13 +111,23 @@ const data = contactSnap.data();
 
 
 
-const online =
+const image =
+
+data.photoURL ||
+
+"../assets/default-avatar.png";
+
+
+
+const status =
+
 data.online ? "🟢 Online" : "⚫ Offline";
 
 
 
-const card =
-document.createElement("div");
+
+
+const card = document.createElement("div");
 
 
 
@@ -97,20 +135,27 @@ card.className="contact-card";
 
 
 
-card.innerHTML=`
+card.innerHTML = `
 
-<div class="avatar">
-👤
-</div>
+
+<img
+
+src="${image}"
+
+style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
+
+>
+
 
 
 <div>
 
 <h3>${contact.name}</h3>
 
-<p>${online}</p>
+<p>${status}</p>
 
 </div>
+
 
 
 <button>
@@ -121,19 +166,29 @@ Chat
 
 
 
+
+
 card.querySelector("button").onclick=()=>{
 
 
 sessionStorage.setItem(
+
 "chatUserId",
+
 contact.uid
+
 );
+
 
 
 sessionStorage.setItem(
+
 "chatUserName",
+
 contact.name
+
 );
+
 
 
 window.location.href="chat.html";
@@ -143,15 +198,18 @@ window.location.href="chat.html";
 
 
 
+
+
 contactsBox.appendChild(card);
 
 
 
-});
+}
 
 
 
 }
+
 
 
 });
