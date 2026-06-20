@@ -1,27 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Zswap Plus - Verify</title>
-    <link rel="stylesheet" href="../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZSwap Plus Verify</title>
+
+<link rel="stylesheet" href="../css/auth.css">
+
 </head>
 
 <body>
 
-<div class="container">
+<div class="login-container">
+
+<div class="login-card">
+
+<div class="logo">
+Z+
+</div>
 
 <h1>Verify Number</h1>
 
-<p>Enter the code sent to your phone</p>
+<p>
+Enter the verification code sent to your phone
+</p>
 
-<input type="text" placeholder="Enter OTP">
 
-<br><br>
+<form id="verifyForm">
 
-<a href="profile.html">
-<button>Verify</button>
-</a>
+<div class="input-group">
+
+<label>Verification Code</label>
+
+<input 
+type="number"
+id="otp"
+placeholder="123456"
+required>
 
 </div>
+
+
+<button type="submit">
+Verify
+</button>
+
+</form>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+document.getElementById("verifyForm")
+.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let otp = document.getElementById("otp").value;
+
+
+if(otp.length !== 6){
+
+alert("Enter a 6 digit code");
+
+return;
+
+}
+
+
+// Continue to profile
+
+window.location.href="profile.html";
+
+
+});
+
+</script>
+
 
 </body>
 </html>
