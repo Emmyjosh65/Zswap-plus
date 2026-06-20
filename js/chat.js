@@ -1,5 +1,6 @@
 // ===================================
-// ZSWAP PLUS - FULL CHAT SYSTEM
+// ZSWAP PLUS - CHAT SYSTEM
+// PROFILE + ONLINE + TYPING + SEEN + NOTIFICATIONS
 // ===================================
 
 
@@ -15,6 +16,7 @@ onAuthStateChanged
 from
 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 
 import {
@@ -49,6 +51,7 @@ document.getElementById("messageInput");
 
 const sendBtn =
 document.getElementById("sendBtn");
+
 
 
 const chatName =
@@ -86,6 +89,7 @@ let currentUserId;
 
 
 
+
 onAuthStateChanged(auth, async(user)=>{
 
 
@@ -103,7 +107,8 @@ currentUserId = user.uid;
 
 
 
-// Load user profile
+
+// Load receiver profile
 
 const userSnap = await getDoc(
 
@@ -127,19 +132,27 @@ data.name;
 
 chatImage.src =
 data.photoURL ||
+
 "../assets/default-avatar.png";
 
 
 
 chatStatus.innerText =
 data.online
+
 ?
+
 "🟢 Online"
+
 :
+
 "⚫ Offline";
 
 
 }
+
+
+
 
 
 
@@ -169,10 +182,15 @@ else{
 
 
 chatStatus.innerText =
+
 data && data.online
+
 ?
+
 "🟢 Online"
+
 :
+
 "⚫ Offline";
 
 
@@ -182,6 +200,8 @@ data && data.online
 }
 
 );
+
+
 
 
 
@@ -198,7 +218,10 @@ loadMessages();
 
 
 
+
+
 function loadMessages(){
+
 
 
 const messagesQuery = query(
@@ -211,35 +234,48 @@ orderBy("createdAt","asc")
 
 
 
+
+
 onSnapshot(messagesQuery,(snapshot)=>{
 
 
-messagesBox.innerHTML="";
+messagesBox.innerHTML = "";
 
 
 
 snapshot.forEach(async(docSnap)=>{
 
 
-const msg = docSnap.data();
+const msg =
+docSnap.data();
+
 
 
 
 if(
 
+
 (msg.senderId === currentUserId &&
+
 msg.receiverId === receiverId)
+
 
 ||
 
+
 (msg.senderId === receiverId &&
+
 msg.receiverId === currentUserId)
+
 
 ){
 
 
 
+
+
 // Mark message as seen
+
 
 if(
 
@@ -250,7 +286,6 @@ msg.receiverId === currentUserId
 !msg.seen
 
 ){
-
 
 
 await updateDoc(
@@ -272,6 +307,8 @@ seen:true
 
 
 
+
+
 const div =
 document.createElement("div");
 
@@ -279,6 +316,7 @@ document.createElement("div");
 
 div.className =
 "message";
+
 
 
 
@@ -296,30 +334,45 @@ div.classList.add("my-message");
 
 div.innerHTML = `
 
+
 ${msg.text}
+
 
 <br>
 
+
 <small>
 
+
 ${
+
 msg.senderId === currentUserId
 
+
 ?
 
+
 (msg.seen
+
 ?
+
 "✓✓ Seen"
+
 :
+
 "✓ Sent")
+
 
 :
 
 ""
 
+
 }
 
+
 </small>
+
 
 `;
 
@@ -340,6 +393,7 @@ messagesBox.appendChild(div);
 
 
 messagesBox.scrollTop =
+
 messagesBox.scrollHeight;
 
 
@@ -357,17 +411,23 @@ messagesBox.scrollHeight;
 
 
 
-// Send message
+
+// SEND MESSAGE + CREATE NOTIFICATION
+
 
 sendBtn.addEventListener("click", async()=>{
 
 
 const text =
+
 messageInput.value.trim();
 
 
 
+
 if(text === "") return;
+
+
 
 
 
@@ -377,15 +437,21 @@ collection(db,"messages"),
 
 {
 
+
 senderId:currentUserId,
+
 
 receiverId:receiverId,
 
+
 text:text,
+
 
 seen:false,
 
+
 createdAt:serverTimestamp()
+
 
 }
 
@@ -393,7 +459,40 @@ createdAt:serverTimestamp()
 
 
 
-messageInput.value="";
+
+
+
+// Create notification
+
+
+await addDoc(
+
+collection(db,"notifications"),
+
+{
+
+
+userId:receiverId,
+
+
+title:"New Message",
+
+
+message:"Someone sent you a message",
+
+
+createdAt:serverTimestamp()
+
+
+}
+
+);
+
+
+
+
+
+messageInput.value = "";
 
 
 
@@ -406,17 +505,23 @@ messageInput.value="";
 
 
 
+
+
 // Typing indicator
+
 
 messageInput.addEventListener("input",async()=>{
 
 
 const user =
+
 auth.currentUser;
 
 
 
 if(!user) return;
+
+
 
 
 
@@ -426,11 +531,14 @@ doc(db,"users",user.uid),
 
 {
 
+
 typing:true
+
 
 }
 
 );
+
 
 
 
@@ -445,7 +553,9 @@ doc(db,"users",user.uid),
 
 {
 
+
 typing:false
+
 
 }
 
