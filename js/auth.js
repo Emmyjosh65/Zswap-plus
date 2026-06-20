@@ -1,62 +1,136 @@
+// ===================================
+// ZSWAP PLUS - FIREBASE PHONE LOGIN
+// ===================================
+
+
 import { auth } from "../firebase/firebase.js";
 
+
 import {
+
     RecaptchaVerifier,
     signInWithPhoneNumber
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-const form = document.getElementById("loginForm");
 
+
+
+const loginForm = document.getElementById("loginForm");
+
+
+
+
+
+// Create Firebase Recaptcha
 
 window.recaptchaVerifier = new RecaptchaVerifier(
+
     auth,
-    "loginForm",
+
+    "recaptcha-container",
+
     {
+
         size: "invisible"
+
     }
+
 );
 
 
-form.addEventListener("submit", async (e)=>{
+
+
+
+
+loginForm.addEventListener("submit", async (e)=>{
+
 
     e.preventDefault();
 
 
-    const country =
+
+    const countryCode =
     document.getElementById("countryCode").value;
 
 
-    const phone =
+
+    const phoneNumber =
     document.getElementById("phoneNumber").value;
 
 
-    const fullNumber = country + phone;
+
+    const fullPhoneNumber =
+    countryCode + phoneNumber;
+
+
+
+
+    if(phoneNumber.length < 7){
+
+
+        alert("Enter a valid phone number");
+
+        return;
+
+
+    }
+
+
+
+
 
 
     try{
 
-        const confirmation =
+
+        const confirmationResult =
+
         await signInWithPhoneNumber(
+
             auth,
-            fullNumber,
+
+            fullPhoneNumber,
+
             window.recaptchaVerifier
+
         );
 
 
-        window.confirmationResult = confirmation;
+
+
+
+        // Save OTP session
+
+        window.confirmationResult = confirmationResult;
+
+
 
 
         alert("OTP sent successfully");
 
 
-        window.location.href="verify.html";
 
 
-    }catch(error){
+
+        window.location.href =
+        "verify.html";
+
+
+
+    }
+
+
+    catch(error){
+
 
         alert(error.message);
 
+
     }
+
+
 
 });
