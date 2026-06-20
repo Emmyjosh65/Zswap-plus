@@ -21,7 +21,6 @@ font-family:Poppins,Arial,sans-serif;
 }
 
 
-
 .container{
 
 padding:20px;
@@ -79,7 +78,6 @@ font-weight:bold;
 .status-text{
 
 margin-top:12px;
-font-size:16px;
 
 }
 
@@ -88,8 +86,30 @@ font-size:16px;
 .views{
 
 color:#aaa;
-margin-top:10px;
 font-size:13px;
+margin-top:10px;
+
+}
+
+
+
+.reactions{
+
+margin-top:15px;
+
+}
+
+
+
+.reactions button{
+
+background:#111b21;
+border:none;
+border-radius:20px;
+padding:8px 12px;
+color:white;
+font-size:18px;
+margin-right:5px;
 
 }
 
@@ -99,10 +119,8 @@ font-size:13px;
 
 text-align:center;
 color:#aaa;
-margin-top:50px;
 
 }
-
 
 
 
@@ -142,12 +160,9 @@ font-size:22px;
 }
 
 
-
 </style>
 
-
 </head>
-
 
 
 
@@ -161,11 +176,9 @@ font-size:22px;
 
 <div class="header">
 
-
 <h2>
 ⭕ Status
 </h2>
-
 
 
 <a href="create-status.html" class="create-btn">
@@ -183,21 +196,16 @@ font-size:22px;
 
 <div id="statusList">
 
-
 <p class="empty">
-
 Loading statuses...
-
 </p>
 
-
 </div>
 
 
 
-
-
 </div>
+
 
 
 
@@ -211,55 +219,44 @@ Loading statuses...
 <a href="home.html">
 
 <span>🏠</span>
-
 Home
 
 </a>
 
 
-
 <a href="chats.html">
 
 <span>💬</span>
-
 Chats
 
 </a>
 
 
-
 <a href="status.html">
 
 <span>⭕</span>
-
 Status
 
 </a>
 
 
-
 <a href="notifications.html">
 
 <span>🔔</span>
-
 Notifications
 
 </a>
 
 
-
 <a href="settings.html">
 
 <span>⚙️</span>
-
 Settings
 
 </a>
 
 
-
 </div>
-
 
 
 
@@ -285,7 +282,6 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
-
 import {
 
 collection,
@@ -303,13 +299,22 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+import {
+
+addReaction
+
+}
+
+from
+
+"../js/status-reactions.js";
+
+
 
 
 
 const statusList =
-
 document.getElementById("statusList");
-
 
 
 let currentUserId = null;
@@ -321,23 +326,19 @@ let currentUserId = null;
 onAuthStateChanged(auth,(user)=>{
 
 
-if(user){
-
-currentUserId = user.uid;
-
-loadStatuses();
-
-}
-
-
-else{
-
+if(!user){
 
 window.location.href="../auth/login.html";
 
+return;
 
 }
 
+
+currentUserId = user.uid;
+
+
+loadStatuses();
 
 
 });
@@ -351,7 +352,6 @@ window.location.href="../auth/login.html";
 function loadStatuses(){
 
 
-
 const statusQuery = query(
 
 collection(db,"statuses"),
@@ -362,39 +362,10 @@ orderBy("createdAt","desc")
 
 
 
-
-
 onSnapshot(statusQuery,(snapshot)=>{
 
 
 statusList.innerHTML="";
-
-
-
-
-
-
-if(snapshot.empty){
-
-
-statusList.innerHTML = `
-
-<p class="empty">
-
-No statuses yet
-
-</p>
-
-`;
-
-return;
-
-
-}
-
-
-
-
 
 
 
@@ -405,16 +376,15 @@ const data = statusDoc.data();
 
 
 
+const statusId = statusDoc.id;
+
+
+
 const views =
 
 data.views ? data.views.length : 0;
 
 
-
-
-
-
-// Add viewer
 
 if(
 
@@ -427,12 +397,12 @@ data.userId !== currentUserId
 
 await updateDoc(
 
-doc(db,"statuses",statusDoc.id),
+doc(db,"statuses",statusId),
 
 {
 
 
-views: arrayUnion(currentUserId)
+views:arrayUnion(currentUserId)
 
 
 }
@@ -446,9 +416,13 @@ views: arrayUnion(currentUserId)
 
 
 
+const reactions = data.reactions || {};
+
+
+
+
 
 const card =
-
 document.createElement("div");
 
 
@@ -485,7 +459,86 @@ ${data.text}
 </div>
 
 
+
+<div class="reactions">
+
+
+<button class="love">
+
+❤️ ${reactions["❤️"] || 0}
+
+</button>
+
+
+<button class="laugh">
+
+😂 ${reactions["😂"] || 0}
+
+</button>
+
+
+<button class="fire">
+
+🔥 ${reactions["🔥"] || 0}
+
+</button>
+
+
+<button class="like">
+
+👍 ${reactions["👍"] || 0}
+
+</button>
+
+
+
+</div>
+
+
 `;
+
+
+
+
+
+
+card.querySelector(".love")
+
+.onclick = ()=>{
+
+addReaction(statusId,"❤️");
+
+};
+
+
+
+card.querySelector(".laugh")
+
+.onclick = ()=>{
+
+addReaction(statusId,"😂");
+
+};
+
+
+
+card.querySelector(".fire")
+
+.onclick = ()=>{
+
+addReaction(statusId,"🔥");
+
+};
+
+
+
+card.querySelector(".like")
+
+.onclick = ()=>{
+
+addReaction(statusId,"👍");
+
+};
 
 
 
@@ -502,9 +555,7 @@ statusList.appendChild(card);
 });
 
 
-
 }
-
 
 
 
