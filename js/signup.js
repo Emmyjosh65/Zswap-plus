@@ -7,26 +7,17 @@ import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
-
 createUserWithEmailAndPassword
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
-
 doc,
-
 setDoc
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
@@ -37,13 +28,13 @@ const signupForm = document.getElementById("signupForm");
 
 
 
+if (signupForm) {
 
 
 signupForm.addEventListener("submit", async (e)=>{
 
 
 e.preventDefault();
-
 
 
 
@@ -85,7 +76,6 @@ return;
 
 
 
-
 if(password.length < 6){
 
 alert("Password must be at least 6 characters");
@@ -98,8 +88,10 @@ return;
 
 
 
-try{
+try {
 
+
+// Create Firebase account
 
 const userCredential =
 
@@ -120,6 +112,8 @@ const user = userCredential.user;
 
 
 
+
+// Save user profile
 
 await setDoc(
 
@@ -153,9 +147,8 @@ window.location.href =
 
 
 
+
 }
-
-
 
 catch(error){
 
@@ -168,3 +161,6 @@ alert(error.message);
 
 
 });
+
+
+}
