@@ -1,1 +1,164 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Poppins, sans-serif;
+}
 
+
+body{
+    background:#0b141a;
+    color:white;
+}
+
+
+.app,
+.chat-page{
+    max-width:450px;
+    margin:auto;
+    min-height:100vh;
+    background:#111b21;
+}
+
+
+/* Header */
+
+header,
+.chat-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px;
+    background:#202c33;
+}
+
+
+header h1,
+.chat-header h2{
+    font-size:22px;
+}
+
+
+
+/* Search */
+
+.search{
+    padding:15px;
+}
+
+
+.search input{
+    width:100%;
+    padding:12px;
+    border-radius:20px;
+    border:none;
+    background:#202c33;
+    color:white;
+}
+
+
+
+/* Chat list */
+
+.chat,
+.status,
+.call{
+    display:flex;
+    gap:15px;
+    padding:15px;
+    border-bottom:1px solid #2a3942;
+}
+
+
+.avatar{
+    width:50px;
+    height:50px;
+    border-radius:50%;
+    background:#00a884;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+
+
+/* Bottom menu */
+
+nav{
+    position:fixed;
+    bottom:0;
+    max-width:450px;
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    padding:15px;
+    background:#202c33;
+}
+
+
+nav a{
+    color:white;
+    text-decoration:none;
+}
+
+
+
+/* Messages */
+
+.messages{
+    padding:20px;
+    height:75vh;
+    overflow-y:auto;
+}
+
+
+.message{
+    padding:10px 15px;
+    margin:10px;
+    max-width:70%;
+    border-radius:15px;
+}
+
+
+.sent{
+    background:#005c4b;
+    margin-left:auto;
+}
+
+
+.received{
+    background:#202c33;
+}
+
+
+
+/* Input */
+
+.message-box{
+    position:fixed;
+    bottom:0;
+    max-width:450px;
+    width:100%;
+    display:flex;
+    padding:10px;
+    background:#202c33;
+}
+
+
+.message-box input{
+    flex:1;
+    padding:12px;
+    border-radius:20px;
+    border:none;
+}
+
+
+.message-box button{
+    padding:12px;
+    margin-left:5px;
+    background:#00a884;
+    color:white;
+    border:none;
+    border-radius:20px;
+}
