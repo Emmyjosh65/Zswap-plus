@@ -8,141 +8,128 @@
 
 <title>ZSwap Plus Status</title>
 
-<link rel="stylesheet" href="../css/auth.css">
-
 
 <style>
 
 body{
 
 margin:0;
-
 background:#0b141a;
-
 color:white;
-
 font-family:Poppins,Arial,sans-serif;
 
 }
 
 
-.app{
+.container{
 
-min-height:100vh;
-
-padding-bottom:80px;
+padding:20px;
+padding-bottom:90px;
 
 }
+
 
 
 .header{
 
 background:#202c33;
-
 padding:20px;
-
+border-radius:15px;
 display:flex;
-
+justify-content:space-between;
 align-items:center;
 
-gap:15px;
+}
+
+
+
+.create-btn{
+
+background:#25d366;
+padding:12px 18px;
+border-radius:25px;
+color:white;
+text-decoration:none;
 
 }
 
 
-.logo{
-
-font-size:28px;
-
-font-weight:bold;
-
-color:#25d366;
-
-}
 
 
 .status-card{
 
-margin:20px;
-
 background:#202c33;
-
+margin-top:15px;
 padding:20px;
-
 border-radius:15px;
 
 }
 
 
 
-.status-item{
+.status-name{
 
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-margin-top:20px;
+font-weight:bold;
+font-size:18px;
 
 }
 
 
 
-.avatar{
+.status-text{
 
-width:55px;
-
-height:55px;
-
-border-radius:50%;
-
-background:#25d366;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:25px;
+margin-top:10px;
+font-size:16px;
 
 }
+
+
+
+.time{
+
+color:#aaa;
+font-size:12px;
+
+}
+
+
+
+
+
+.empty{
+
+text-align:center;
+color:#aaa;
+margin-top:50px;
+
+}
+
+
 
 
 
 .bottom-nav{
 
 position:fixed;
-
 bottom:0;
-
 left:0;
-
 width:100%;
-
 height:70px;
-
 background:#202c33;
-
 display:flex;
-
 justify-content:space-around;
-
 align-items:center;
 
 }
 
 
 
+
 .bottom-nav a{
 
 color:white;
-
 text-decoration:none;
-
 font-size:12px;
-
 text-align:center;
 
 }
@@ -152,7 +139,6 @@ text-align:center;
 .bottom-nav span{
 
 display:block;
-
 font-size:22px;
 
 }
@@ -164,57 +150,29 @@ font-size:22px;
 </head>
 
 
+
 <body>
 
 
-<div class="app">
+
+<div class="container">
+
 
 
 <div class="header">
 
-<div class="logo">
-Z+
-</div>
 
 <h2>
-Status
-</h2>
-
-</div>
-
-
-
-
-<div class="status-card">
-
-
-<h2>
-My Status
+⭕ Status
 </h2>
 
 
-<div class="status-item">
 
+<a href="create-status.html" class="create-btn">
 
-<div class="avatar">
-👤
-</div>
++ Create
 
-
-<div>
-
-<h3>
-Add Status Update
-</h3>
-
-<p>
-Share photos, text and updates
-</p>
-
-</div>
-
-
-</div>
+</a>
 
 
 </div>
@@ -223,20 +181,26 @@ Share photos, text and updates
 
 
 
-<div class="status-card">
 
+<div id="statusList">
 
-<h2>
-Recent Updates
-</h2>
+<p class="empty">
 
+Loading statuses...
 
-<p>
-No status updates yet
 </p>
 
 
 </div>
+
+
+
+
+
+</div>
+
+
+
 
 
 
@@ -247,50 +211,232 @@ No status updates yet
 
 <a href="home.html">
 
-<span>🏠</span>
+<span>
+🏠
+</span>
+
 Home
 
 </a>
 
 
+
 <a href="chats.html">
 
-<span>💬</span>
+<span>
+💬
+</span>
+
 Chats
 
 </a>
 
 
+
 <a href="status.html">
 
-<span>⭕</span>
+<span>
+⭕
+</span>
+
 Status
 
 </a>
 
 
-<a href="calls.html">
 
-<span>📞</span>
-Calls
+<a href="notifications.html">
+
+<span>
+🔔
+</span>
+
+Notifications
 
 </a>
 
 
+
 <a href="settings.html">
 
-<span>⚙️</span>
+<span>
+⚙️
+</span>
+
 Settings
 
 </a>
 
 
+
+</div>
+
+
+
+
+
+
+
+<script type="module">
+
+
+import { db } from "/Zswap-plus/firebase/firebase.js";
+
+
+
+import {
+
+collection,
+query,
+orderBy,
+onSnapshot
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+
+
+
+const statusList =
+
+document.getElementById("statusList");
+
+
+
+
+
+
+
+const statusQuery = query(
+
+collection(db,"statuses"),
+
+orderBy("createdAt","desc")
+
+);
+
+
+
+
+
+
+
+onSnapshot(statusQuery,(snapshot)=>{
+
+
+
+statusList.innerHTML="";
+
+
+
+
+
+
+if(snapshot.empty){
+
+
+
+statusList.innerHTML = `
+
+<p class="empty">
+
+No statuses yet
+
+</p>
+
+`;
+
+return;
+
+
+}
+
+
+
+
+
+
+
+snapshot.forEach((doc)=>{
+
+
+
+const data = doc.data();
+
+
+
+
+
+
+const card =
+
+document.createElement("div");
+
+
+
+card.className="status-card";
+
+
+
+
+
+
+card.innerHTML = `
+
+
+<div class="status-name">
+
+${data.name}
+
 </div>
 
 
+<div class="status-text">
+
+${data.text}
 
 </div>
-<script type="module" src="../js/status-online.js"></script>
+
+
+<div class="time">
+
+Posted recently
+
+</div>
+
+
+`;
+
+
+
+
+
+
+statusList.appendChild(card);
+
+
+
+});
+
+
+
+
+});
+
+
+
+
+
+</script>
+
+
+
+
 
 </body>
 
