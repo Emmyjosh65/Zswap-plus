@@ -12,66 +12,182 @@
 
 </head>
 
+
 <body>
+
 
 <div class="login-container">
 
+
 <div class="login-card">
+
 
 <div class="logo">
 Z+
 </div>
 
+
+
 <h1>
 Welcome to ZSwap Plus
 </h1>
 
-<p id="userName">
+
+
+<h2 id="userName">
 Loading...
-</p>
+</h2>
+
+
 
 <p id="userEmail">
 Loading...
 </p>
 
+
+
+
 <button id="logoutBtn">
-
 Logout
-
 </button>
 
+
+
 </div>
 
+
 </div>
 
-<script>
-
-const userName =
-sessionStorage.getItem("zswapName");
-
-const userEmail =
-sessionStorage.getItem("zswapEmail");
 
 
-document.getElementById("userName").innerText =
-userName || "ZSwap User";
+
+<script type="module">
 
 
-document.getElementById("userEmail").innerText =
-userEmail || "";
+import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
-document.getElementById("logoutBtn")
-.addEventListener("click", ()=>{
+import {
 
-sessionStorage.clear();
+doc,
+
+getDoc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+import {
+
+onAuthStateChanged,
+
+signOut
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+
+
+
+const nameBox =
+document.getElementById("userName");
+
+
+const emailBox =
+document.getElementById("userEmail");
+
+
+
+
+
+onAuthStateChanged(auth, async(user)=>{
+
+
+if(user){
+
+
+
+emailBox.innerText =
+user.email;
+
+
+
+
+const userDoc = await getDoc(
+
+doc(db,"users",user.uid)
+
+);
+
+
+
+if(userDoc.exists()){
+
+
+nameBox.innerText =
+
+userDoc.data().name;
+
+
+}
+
+else{
+
+
+nameBox.innerText =
+"ZSwap User";
+
+
+}
+
+
+
+}
+
+else{
+
 
 window.location.href =
 "../auth/login.html";
 
+
+}
+
+
+
 });
 
+
+
+
+
+
+document.getElementById("logoutBtn")
+.addEventListener("click", async()=>{
+
+
+await signOut(auth);
+
+
+window.location.href =
+"../auth/login.html";
+
+
+});
+
+
+
 </script>
+
+
 
 </body>
 
