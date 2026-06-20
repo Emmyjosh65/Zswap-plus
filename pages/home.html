@@ -4,29 +4,41 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ZSwap Plus</title>
+<title>ZSwap Plus Home</title>
 
 <link rel="stylesheet" href="../css/auth.css">
 
 <style>
 
 body{
+
 margin:0;
-font-family:Poppins,Arial,sans-serif;
+
 background:#0b141a;
+
 color:white;
+
+font-family:Poppins,Arial,sans-serif;
+
 }
 
 
-.app-container{
+.app{
+
 min-height:100vh;
-padding-bottom:70px;
+
+padding-bottom:80px;
+
 }
+
 
 
 .header{
+
+background:#202c33;
 
 padding:20px;
 
@@ -36,40 +48,102 @@ justify-content:space-between;
 
 align-items:center;
 
-background:#111b21;
-
 }
+
 
 
 .logo{
 
-font-size:28px;
+font-size:30px;
 
-font-weight:bold;
+font-weight:700;
 
 color:#25d366;
 
 }
 
 
-.content{
+
+.profile-btn{
+
+background:#25d366;
+
+color:white;
+
+border:none;
+
+border-radius:50%;
+
+width:40px;
+
+height:40px;
+
+font-size:20px;
+
+}
+
+
+
+.search{
+
+margin:20px;
+
+background:#202c33;
+
+padding:12px 15px;
+
+border-radius:20px;
+
+}
+
+
+
+.search input{
+
+width:100%;
+
+background:none;
+
+border:none;
+
+outline:none;
+
+color:white;
+
+font-size:16px;
+
+}
+
+
+
+.welcome{
 
 padding:20px;
 
 }
+
 
 
 .card{
 
 background:#202c33;
 
+margin:20px;
+
 padding:20px;
 
 border-radius:15px;
 
-margin-top:20px;
+}
+
+
+
+.card h2{
+
+margin-top:0;
 
 }
+
 
 
 .bottom-nav{
@@ -82,9 +156,9 @@ left:0;
 
 width:100%;
 
-height:65px;
+height:70px;
 
-background:#111b21;
+background:#202c33;
 
 display:flex;
 
@@ -95,17 +169,19 @@ align-items:center;
 }
 
 
+
 .bottom-nav a{
 
 color:white;
 
 text-decoration:none;
 
-font-size:13px;
+font-size:12px;
 
 text-align:center;
 
 }
+
 
 
 .bottom-nav span{
@@ -117,15 +193,18 @@ font-size:22px;
 }
 
 
+
 </style>
 
 </head>
 
 
+
 <body>
 
 
-<div class="app-container">
+
+<div class="app">
 
 
 
@@ -133,13 +212,22 @@ font-size:22px;
 
 
 <div class="logo">
+
 Z+
+
 </div>
 
 
-<div>
+<h3>
 ZSwap Plus
-</div>
+</h3>
+
+
+<button class="profile-btn" onclick="openProfile()">
+
+👤
+
+</button>
 
 
 </div>
@@ -148,29 +236,47 @@ ZSwap Plus
 
 
 
-<div class="content">
+<div class="search">
+
+<input placeholder="Search chats, people...">
+
+</div>
 
 
-<h1>
-Welcome 👋
+
+
+
+<div class="welcome">
+
+
+<h1 id="welcomeName">
+
+Welcome
+
 </h1>
 
 
-<p id="welcomeName">
-Loading...
+<p>
+Connect, chat and share with people.
 </p>
+
+
+</div>
+
 
 
 
 
 <div class="card">
 
+
 <h2>
-Start chatting
+💬 Chats
 </h2>
 
+
 <p>
-Connect with people on ZSwap Plus.
+Start a conversation with your friends.
 </p>
 
 
@@ -179,8 +285,21 @@ Connect with people on ZSwap Plus.
 
 
 
-</div>
 
+<div class="card">
+
+
+<h2>
+⭕ Status
+</h2>
+
+
+<p>
+Share updates with your contacts.
+</p>
+
+
+</div>
 
 
 
@@ -209,7 +328,6 @@ Chats
 
 
 
-
 <a href="status.html">
 
 <span>⭕</span>
@@ -217,7 +335,6 @@ Chats
 Status
 
 </a>
-
 
 
 
@@ -231,7 +348,6 @@ Calls
 
 
 
-
 <a href="settings.html">
 
 <span>⚙️</span>
@@ -241,12 +357,12 @@ Settings
 </a>
 
 
-
 </div>
 
 
 
 </div>
+
 
 
 
@@ -272,6 +388,7 @@ from
 import {
 
 doc,
+
 getDoc
 
 }
@@ -298,28 +415,20 @@ onAuthStateChanged(auth, async(user)=>{
 if(user){
 
 
-const userRef = doc(
+const userData = await getDoc(
 
-db,
-
-"users",
-
-user.uid
+doc(db,"users",user.uid)
 
 );
 
 
 
-const userSnap = await getDoc(userRef);
-
-
-
-if(userSnap.exists()){
+if(userData.exists()){
 
 
 welcomeName.innerText =
 
-"Welcome " + userSnap.data().name;
+"Welcome " + userData.data().name + " 👋";
 
 
 }
@@ -342,7 +451,20 @@ window.location.href="../auth/login.html";
 
 
 
+
+
+window.openProfile = function(){
+
+
+window.location.href="settings.html";
+
+
+}
+
+
+
 </script>
+
 
 
 </body>
