@@ -1,5 +1,5 @@
 // ===================================
-// ZSWAP PLUS - EMAIL PASSWORD LOGIN
+// ZSWAP PLUS - LOGIN
 // ===================================
 
 
@@ -7,8 +7,6 @@ import { auth } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
-
-createUserWithEmailAndPassword,
 
 signInWithEmailAndPassword
 
@@ -22,15 +20,21 @@ from
 
 
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
 
-const button = document.getElementById("loginBtn");
-
-
+document.getElementById("loginForm");
 
 
 
-loginForm.addEventListener("submit", async (e)=>{
+const loginBtn =
+
+document.getElementById("loginBtn");
+
+
+
+
+
+loginForm.addEventListener("submit", async(e)=>{
 
 
 e.preventDefault();
@@ -46,19 +50,7 @@ document.getElementById("email").value.trim();
 
 const password =
 
-document.getElementById("password").value.trim();
-
-
-
-
-
-if(password.length < 6){
-
-alert("Password must be at least 6 characters");
-
-return;
-
-}
+document.getElementById("password").value;
 
 
 
@@ -67,11 +59,9 @@ return;
 try{
 
 
-button.innerText = "Loading...";
+loginBtn.innerText = "Logging in...";
 
 
-
-// Try login first
 
 await signInWithEmailAndPassword(
 
@@ -85,10 +75,38 @@ password
 
 
 
+
+// Save login details
+
+sessionStorage.setItem(
+
+"zswapEmail",
+
+email
+
+);
+
+
+
+// Show name from email until Firestore profile is added
+
+sessionStorage.setItem(
+
+"zswapName",
+
+email.split("@")[0]
+
+);
+
+
+
+
 alert("Login successful");
 
 
+
 window.location.href =
+
 "../pages/profile.html";
 
 
@@ -100,64 +118,15 @@ window.location.href =
 catch(error){
 
 
-
-// If account does not exist, create one
-
-if(error.code === "auth/user-not-found"){
-
-
-
-try{
-
-
-await createUserWithEmailAndPassword(
-
-auth,
-
-email,
-
-password
-
-);
-
-
-
-alert("Account created successfully");
-
-
-window.location.href =
-"../pages/profile.html";
-
-
-
-}
-
-catch(createError){
-
-alert(createError.message);
-
-}
-
-
-}
-
-
-
-else{
-
-
 alert(error.message);
 
 
-}
-
-
 
 }
 
 
 
-button.innerText = "Continue";
+loginBtn.innerText = "Login";
 
 
 
