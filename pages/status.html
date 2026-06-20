@@ -21,6 +21,7 @@ font-family:Poppins,Arial,sans-serif;
 }
 
 
+
 .container{
 
 padding:20px;
@@ -55,7 +56,6 @@ text-decoration:none;
 
 
 
-
 .status-card{
 
 background:#202c33;
@@ -69,8 +69,8 @@ border-radius:15px;
 
 .status-name{
 
-font-weight:bold;
 font-size:18px;
+font-weight:bold;
 
 }
 
@@ -78,21 +78,20 @@ font-size:18px;
 
 .status-text{
 
-margin-top:10px;
+margin-top:12px;
 font-size:16px;
 
 }
 
 
 
-.time{
+.views{
 
 color:#aaa;
-font-size:12px;
+margin-top:10px;
+font-size:13px;
 
 }
-
-
 
 
 
@@ -124,7 +123,6 @@ align-items:center;
 
 
 
-
 .bottom-nav a{
 
 color:white;
@@ -147,7 +145,9 @@ font-size:22px;
 
 </style>
 
+
 </head>
+
 
 
 
@@ -181,8 +181,8 @@ font-size:22px;
 
 
 
-
 <div id="statusList">
+
 
 <p class="empty">
 
@@ -205,15 +205,12 @@ Loading statuses...
 
 
 
-
 <div class="bottom-nav">
 
 
 <a href="home.html">
 
-<span>
-🏠
-</span>
+<span>🏠</span>
 
 Home
 
@@ -223,9 +220,7 @@ Home
 
 <a href="chats.html">
 
-<span>
-💬
-</span>
+<span>💬</span>
 
 Chats
 
@@ -235,9 +230,7 @@ Chats
 
 <a href="status.html">
 
-<span>
-⭕
-</span>
+<span>⭕</span>
 
 Status
 
@@ -247,9 +240,7 @@ Status
 
 <a href="notifications.html">
 
-<span>
-🔔
-</span>
+<span>🔔</span>
 
 Notifications
 
@@ -259,9 +250,7 @@ Notifications
 
 <a href="settings.html">
 
-<span>
-⚙️
-</span>
+<span>⚙️</span>
 
 Settings
 
@@ -277,10 +266,23 @@ Settings
 
 
 
+
+
 <script type="module">
 
 
-import { db } from "/Zswap-plus/firebase/firebase.js";
+import { auth, db } from "/Zswap-plus/firebase/firebase.js";
+
+
+import {
+
+onAuthStateChanged
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
@@ -289,7 +291,10 @@ import {
 collection,
 query,
 orderBy,
-onSnapshot
+onSnapshot,
+doc,
+updateDoc,
+arrayUnion
 
 }
 
@@ -301,14 +306,49 @@ from
 
 
 
-
 const statusList =
 
 document.getElementById("statusList");
 
 
 
+let currentUserId = null;
 
+
+
+
+
+onAuthStateChanged(auth,(user)=>{
+
+
+if(user){
+
+currentUserId = user.uid;
+
+loadStatuses();
+
+}
+
+
+else{
+
+
+window.location.href="../auth/login.html";
+
+
+}
+
+
+
+});
+
+
+
+
+
+
+
+function loadStatuses(){
 
 
 
@@ -324,10 +364,7 @@ orderBy("createdAt","desc")
 
 
 
-
-
 onSnapshot(statusQuery,(snapshot)=>{
-
 
 
 statusList.innerHTML="";
@@ -338,7 +375,6 @@ statusList.innerHTML="";
 
 
 if(snapshot.empty){
-
 
 
 statusList.innerHTML = `
@@ -362,11 +398,49 @@ return;
 
 
 
-snapshot.forEach((doc)=>{
+snapshot.forEach(async(statusDoc)=>{
+
+
+const data = statusDoc.data();
 
 
 
-const data = doc.data();
+const views =
+
+data.views ? data.views.length : 0;
+
+
+
+
+
+
+// Add viewer
+
+if(
+
+currentUserId &&
+
+data.userId !== currentUserId
+
+){
+
+
+await updateDoc(
+
+doc(db,"statuses",statusDoc.id),
+
+{
+
+
+views: arrayUnion(currentUserId)
+
+
+}
+
+);
+
+
+}
 
 
 
@@ -385,7 +459,6 @@ card.className="status-card";
 
 
 
-
 card.innerHTML = `
 
 
@@ -396,6 +469,7 @@ ${data.name}
 </div>
 
 
+
 <div class="status-text">
 
 ${data.text}
@@ -403,15 +477,15 @@ ${data.text}
 </div>
 
 
-<div class="time">
 
-Posted recently
+<div class="views">
+
+👁 ${views} views
 
 </div>
 
 
 `;
-
 
 
 
@@ -425,16 +499,18 @@ statusList.appendChild(card);
 
 
 
-
 });
+
+
+
+}
+
 
 
 
 
 
 </script>
-
-
 
 
 
