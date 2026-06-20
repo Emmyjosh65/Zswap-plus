@@ -1,8 +1,6 @@
 // ===================================
 // ZSWAP PLUS - FIREBASE SETUP
-// EMAIL & PASSWORD AUTH
 // ===================================
-
 
 import { initializeApp } from 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -12,6 +10,8 @@ import { getAuth } from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+import { getFirestore } from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
@@ -36,7 +36,6 @@ const firebaseConfig = {
 
 
 
-
 // Initialize Firebase
 
 const app = initializeApp(firebaseConfig);
@@ -44,6 +43,13 @@ const app = initializeApp(firebaseConfig);
 
 
 
-// Initialize Authentication
+// Authentication
 
 export const auth = getAuth(app);
+
+
+
+
+// Firestore Database
+
+export const db = getFirestore(app);
