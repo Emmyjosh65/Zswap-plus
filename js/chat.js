@@ -1,65 +1,61 @@
 // ===================================
-// ZSWAP PLUS - FIRESTORE CHAT
+// ZSWAP PLUS - CHAT WITH SEEN STATUS
 // ===================================
-
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
-
 onAuthStateChanged
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 import {
-
 collection,
 addDoc,
 query,
-where,
 orderBy,
 onSnapshot,
-serverTimestamp
-
+serverTimestamp,
+doc,
+updateDoc
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
+const messagesBox =
+document.getElementById("messages");
+
+const messageInput =
+document.getElementById("messageInput");
+
+const sendBtn =
+document.getElementById("sendBtn");
 
 
-const messagesBox = document.getElementById("messages");
-
-const messageInput = document.getElementById("messageInput");
-
-const sendBtn = document.getElementById("sendBtn");
-
-const chatName = document.getElementById("chatName");
-
-
-
-
-
-const receiverId = sessionStorage.getItem("chatUserId");
-
-const receiverName = sessionStorage.getItem("chatUserName");
+const chatName =
+document.getElementById("chatName");
 
 
 
+const receiverId =
+sessionStorage.getItem("chatUserId");
 
 
-chatName.innerText = receiverName || "Chat";
+const receiverName =
+sessionStorage.getItem("chatUserName");
 
 
+chatName.innerText =
+receiverName || "Chat";
+
+
+
+let currentUserId;
 
 
 
@@ -75,8 +71,9 @@ return;
 }
 
 
+currentUserId = user.uid;
 
-loadMessages(user.uid);
+loadMessages();
 
 
 });
@@ -85,7 +82,7 @@ loadMessages(user.uid);
 
 
 
-function loadMessages(userId){
+function loadMessages(){
 
 
 const messagesQuery = query(
@@ -101,46 +98,98 @@ orderBy("createdAt","asc")
 onSnapshot(messagesQuery,(snapshot)=>{
 
 
-messagesBox.innerHTML = "";
+messagesBox.innerHTML="";
 
 
 
-snapshot.forEach((doc)=>{
+snapshot.forEach(async(docSnap)=>{
 
 
-const msg = doc.data();
+const msg = docSnap.data();
 
 
 
 if(
 
-(msg.senderId === userId && msg.receiverId === receiverId)
+(msg.senderId === currentUserId &&
+msg.receiverId === receiverId)
 
 ||
 
-(msg.senderId === receiverId && msg.receiverId === userId)
+(msg.senderId === receiverId &&
+msg.receiverId === currentUserId)
 
 ){
 
 
 
-const div = document.createElement("div");
+if(msg.receiverId === currentUserId && !msg.seen){
 
 
+await updateDoc(
 
-div.className = "message";
+doc(db,"messages",docSnap.id),
 
+{
 
+seen:true
 
-if(msg.senderId === userId){
+}
 
-div.classList.add("my-message");
+);
+
 
 }
 
 
 
-div.innerText = msg.text;
+
+const div =
+document.createElement("div");
+
+
+
+div.className="message";
+
+
+
+if(msg.senderId === currentUserId){
+
+
+div.classList.add("my-message");
+
+
+}
+
+
+
+
+
+div.innerHTML = `
+
+${msg.text}
+
+<br>
+
+<small>
+
+${msg.senderId === currentUserId
+
+?
+
+(msg.seen ? "✓✓ Seen" : "✓ Sent")
+
+:
+
+""
+
+}
+
+</small>
+
+`;
+
+
 
 
 
@@ -156,7 +205,8 @@ messagesBox.appendChild(div);
 
 
 
-messagesBox.scrollTop = messagesBox.scrollHeight;
+messagesBox.scrollTop =
+messagesBox.scrollHeight;
 
 
 
@@ -171,18 +221,15 @@ messagesBox.scrollTop = messagesBox.scrollHeight;
 
 
 
-sendBtn.addEventListener("click", async()=>{
+sendBtn.addEventListener("click",async()=>{
 
 
-const text = messageInput.value.trim();
-
-
-
-if(text === "") return;
+const text =
+messageInput.value.trim();
 
 
 
-const user = auth.currentUser;
+if(text==="") return;
 
 
 
@@ -192,11 +239,13 @@ collection(db,"messages"),
 
 {
 
-senderId:user.uid,
+senderId:currentUserId,
 
 receiverId:receiverId,
 
 text:text,
+
+seen:false,
 
 createdAt:serverTimestamp()
 
@@ -206,7 +255,7 @@ createdAt:serverTimestamp()
 
 
 
-messageInput.value = "";
+messageInput.value="";
 
 
 });
