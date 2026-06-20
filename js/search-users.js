@@ -1,47 +1,36 @@
 // ===================================
-// ZSWAP PLUS - SEARCH USERS
+// ZSWAP PLUS - SEARCH + ADD CONTACTS
 // ===================================
-
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-
 import {
-
 onAuthStateChanged
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 import {
-
 collection,
-getDocs
-
+getDocs,
+doc,
+updateDoc,
+arrayUnion
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+const searchInput =
+document.getElementById("searchInput");
 
-
-
-const searchInput = document.getElementById("searchInput");
-
-const results = document.getElementById("results");
+const results =
+document.getElementById("results");
 
 
 let allUsers = [];
 
-let currentUserId;
-
-
+let currentUser;
 
 
 
@@ -57,18 +46,13 @@ return;
 }
 
 
-currentUserId = user.uid;
+currentUser = user;
+
 
 
 const snapshot = await getDocs(
-
 collection(db,"users")
-
 );
-
-
-
-allUsers = [];
 
 
 
@@ -78,8 +62,7 @@ snapshot.forEach((doc)=>{
 const data = doc.data();
 
 
-
-if(data.uid !== currentUserId){
+if(data.uid !== user.uid){
 
 allUsers.push(data);
 
@@ -89,9 +72,7 @@ allUsers.push(data);
 });
 
 
-
 });
-
 
 
 
@@ -100,18 +81,15 @@ allUsers.push(data);
 searchInput.addEventListener("input",()=>{
 
 
-const value = searchInput.value.toLowerCase();
+const value =
+searchInput.value.toLowerCase();
+
+
+results.innerHTML="";
 
 
 
-results.innerHTML = "";
-
-
-
-const filtered = allUsers.filter((user)=>{
-
-
-return (
+allUsers.filter(user=>
 
 user.name.toLowerCase().includes(value)
 
@@ -119,35 +97,22 @@ user.name.toLowerCase().includes(value)
 
 user.email.toLowerCase().includes(value)
 
-);
+).forEach(user=>{
 
 
-});
+const card =
+document.createElement("div");
 
 
-
-
-
-filtered.forEach((user)=>{
-
-
-
-const card = document.createElement("div");
+card.className="user-card";
 
 
 
-card.className = "user-card";
-
-
-
-card.innerHTML = `
+card.innerHTML=`
 
 <div class="avatar">
-
 👤
-
 </div>
-
 
 <div>
 
@@ -157,11 +122,8 @@ card.innerHTML = `
 
 </div>
 
-
-<button>
-
-Chat
-
+<button class="addBtn">
+Add
 </button>
 
 `;
@@ -169,36 +131,35 @@ Chat
 
 
 
+card.querySelector(".addBtn")
+.onclick = async()=>{
 
-card.querySelector("button").onclick = ()=>{
 
+await updateDoc(
 
-sessionStorage.setItem(
+doc(db,"users",currentUser.uid),
 
-"chatUserId",
+{
 
-user.uid
+contacts: arrayUnion({
+
+uid:user.uid,
+
+name:user.name,
+
+email:user.email
+
+})
+
+}
 
 );
 
 
-
-sessionStorage.setItem(
-
-"chatUserName",
-
-user.name
-
-);
-
-
-
-window.location.href="chat.html";
+alert("Contact added");
 
 
 };
-
-
 
 
 
@@ -207,7 +168,6 @@ results.appendChild(card);
 
 
 });
-
 
 
 });
