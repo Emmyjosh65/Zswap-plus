@@ -8,65 +8,166 @@
 
 <title>ZSwap Plus Chat</title>
 
-<link rel="stylesheet" href="../css/app.css">
+<style>
+
+body{
+margin:0;
+background:#0b141a;
+color:white;
+font-family:Poppins,Arial,sans-serif;
+}
+
+
+.chat-app{
+height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+
+.header{
+background:#202c33;
+padding:15px;
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+
+.avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:#25d366;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+
+.messages{
+
+flex:1;
+padding:15px;
+overflow-y:auto;
+
+}
+
+
+
+.message{
+
+background:#202c33;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+max-width:70%;
+
+}
+
+
+
+.my-message{
+
+margin-left:auto;
+background:#005c4b;
+
+}
+
+
+
+.input-area{
+
+display:flex;
+padding:10px;
+background:#202c33;
+
+}
+
+
+
+.input-area input{
+
+flex:1;
+padding:12px;
+border:none;
+border-radius:20px;
+outline:none;
+
+}
+
+
+
+.input-area button{
+
+margin-left:10px;
+border:none;
+background:#25d366;
+color:white;
+border-radius:50%;
+width:45px;
+height:45px;
+
+}
+
+
+</style>
 
 </head>
 
 
+
 <body>
 
-<div class="chat-page">
 
-
-<header class="chat-header">
-
-<a href="chats.html">
-←
-</a>
-
-<h2>Alex</h2>
-
-<button>
-☎
-</button>
-
-</header>
+<div class="chat-app">
 
 
 
-<div class="messages" id="messages">
+<div class="header">
 
 
-<div class="message received">
-Hello 👋 Welcome to ZSwap Plus
+<div class="avatar">
+👤
 </div>
 
 
-<div class="message sent">
-Thanks! This looks great 🚀
-</div>
+<h3 id="chatName">
+Chat
+</h3>
 
 
 </div>
 
 
 
-<form id="messageForm" class="message-box">
 
 
-<input 
-id="messageInput"
-type="text"
-placeholder="Type a message..."
-required>
+<div id="messages" class="messages">
 
 
-<button>
-Send
+Loading messages...
+
+
+</div>
+
+
+
+
+
+
+<div class="input-area">
+
+
+<input id="messageInput" placeholder="Type a message">
+
+
+<button id="sendBtn">
+➤
 </button>
 
 
-</form>
+</div>
 
 
 
@@ -74,42 +175,10 @@ Send
 
 
 
-<script>
-
-const form =
-document.getElementById("messageForm");
-
-const input =
-document.getElementById("messageInput");
-
-const messages =
-document.getElementById("messages");
 
 
-form.addEventListener("submit", function(e){
+<script type="module" src="../js/chat.js"></script>
 
-e.preventDefault();
-
-
-let text = input.value;
-
-
-let msg = document.createElement("div");
-
-msg.className = "message sent";
-
-msg.innerText = text;
-
-
-messages.appendChild(msg);
-
-
-input.value="";
-
-
-});
-
-</script>
 
 
 </body>
