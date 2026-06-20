@@ -68,6 +68,7 @@ loginForm.addEventListener("submit", async (e)=>{
 
 
 
+
     if(phoneNumber.length < 7){
 
 
@@ -77,6 +78,7 @@ loginForm.addEventListener("submit", async (e)=>{
 
 
     }
+
 
 
 
@@ -102,9 +104,21 @@ loginForm.addEventListener("submit", async (e)=>{
 
 
 
-        // Save OTP session
+        // Store phone number
+
+        sessionStorage.setItem(
+            "zswapPhone",
+            fullPhoneNumber
+        );
+
+
+
+
+
+        // Store OTP confirmation temporarily
 
         window.confirmationResult = confirmationResult;
+
 
 
 
