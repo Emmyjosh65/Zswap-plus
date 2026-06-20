@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Search Users - ZSwap Plus</title>
+
+<style>
+
+body{
+margin:0;
+background:#0b141a;
+color:white;
+font-family:Poppins,Arial,sans-serif;
+}
+
+.container{
+padding:20px;
+}
+
+.header{
+background:#202c33;
+padding:20px;
+border-radius:10px;
+}
+
+input{
+
+width:90%;
+padding:15px;
+margin-top:20px;
+border:none;
+border-radius:20px;
+outline:none;
+
+}
+
+
+.user-card{
+
+background:#202c33;
+padding:15px;
+margin-top:15px;
+border-radius:12px;
+display:flex;
+align-items:center;
+gap:15px;
+
+}
+
+
+.avatar{
+
+width:50px;
+height:50px;
+border-radius:50%;
+background:#25d366;
+display:flex;
+align-items:center;
+justify-content:center;
+
+}
+
+
+
+button{
+
+background:#25d366;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:20px;
+
+}
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="header">
+
+<h2>
+Search Users
+</h2>
+
+</div>
+
+
+
+<input 
+id="searchInput"
+placeholder="Search by name or email">
+
+
+
+<div id="results">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+<script type="module" src="../js/search-users.js"></script>
+
+
+</body>
+
+</html>
