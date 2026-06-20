@@ -35,8 +35,6 @@ from
 
 const signupForm = document.getElementById("signupForm");
 
-const signupBtn = document.getElementById("signupBtn");
-
 
 
 
@@ -56,11 +54,9 @@ document.getElementById("fullName").value.trim();
 
 
 
-
 const email =
 
 document.getElementById("email").value.trim();
-
 
 
 
@@ -70,11 +66,9 @@ document.getElementById("password").value;
 
 
 
-
 const confirmPassword =
 
 document.getElementById("confirmPassword").value;
-
 
 
 
@@ -107,14 +101,6 @@ return;
 try{
 
 
-signupBtn.innerText = "Creating...";
-
-
-
-
-
-// Create Firebase account
-
 const userCredential =
 
 await createUserWithEmailAndPassword(
@@ -129,15 +115,11 @@ password
 
 
 
-
-
 const user = userCredential.user;
 
 
 
 
-
-// Save user profile in Firestore
 
 await setDoc(
 
@@ -165,17 +147,15 @@ alert("ZSwap account created successfully");
 
 
 
-
-
 window.location.href =
 
 "../pages/profile.html";
 
 
 
-
-
 }
+
+
 
 catch(error){
 
@@ -184,11 +164,6 @@ alert(error.message);
 
 
 }
-
-
-
-
-signupBtn.innerText = "Create Account";
 
 
 
