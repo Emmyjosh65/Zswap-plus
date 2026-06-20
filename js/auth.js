@@ -1,9 +1,6 @@
 // ===================================
-// ZSWAP PLUS FIREBASE PHONE LOGIN
+// ZSWAP PLUS - EMAIL PASSWORD LOGIN
 // ===================================
-
-
-alert("AUTH FILE LOADED");
 
 
 import { auth } from "/Zswap-plus/firebase/firebase.js";
@@ -11,9 +8,9 @@ import { auth } from "/Zswap-plus/firebase/firebase.js";
 
 import {
 
-RecaptchaVerifier,
+createUserWithEmailAndPassword,
 
-signInWithPhoneNumber
+signInWithEmailAndPassword
 
 }
 
@@ -27,61 +24,37 @@ from
 
 const loginForm = document.getElementById("loginForm");
 
-const button = document.getElementById("continueBtn");
+const button = document.getElementById("loginBtn");
 
 
 
 
 
-window.recaptchaVerifier = new RecaptchaVerifier(
-
-auth,
-
-"recaptcha-container",
-
-{
-
-size:"normal"
-
-}
-
-);
-
-
-
-
-
-loginForm.addEventListener("submit", async(e)=>{
+loginForm.addEventListener("submit", async (e)=>{
 
 
 e.preventDefault();
 
 
 
-console.log("Continue clicked");
+
+const email =
+
+document.getElementById("email").value.trim();
 
 
 
-const code =
+const password =
 
-document.getElementById("countryCode").value;
-
-
-
-const phone =
-
-document.getElementById("phoneNumber").value.trim();
-
-
-
-const fullNumber = code + phone;
+document.getElementById("password").value.trim();
 
 
 
 
-if(phone.length < 7){
 
-alert("Enter a valid phone number");
+if(password.length < 6){
+
+alert("Password must be at least 6 characters");
 
 return;
 
@@ -90,71 +63,101 @@ return;
 
 
 
+
 try{
 
 
-button.innerText="Sending...";
+button.innerText = "Loading...";
 
 
 
-const confirmationResult =
+// Try login first
 
-await signInWithPhoneNumber(
+await signInWithEmailAndPassword(
 
 auth,
 
-fullNumber,
+email,
 
-window.recaptchaVerifier
-
-);
-
-
-
-sessionStorage.setItem(
-
-"verificationId",
-
-confirmationResult.verificationId
+password
 
 );
 
 
 
-sessionStorage.setItem(
-
-"zswapPhone",
-
-fullNumber
-
-);
+alert("Login successful");
 
 
-
-alert("OTP sent successfully");
-
-
-
-window.location.href="verify.html";
+window.location.href =
+"../pages/profile.html";
 
 
 
 }
 
+
+
 catch(error){
 
 
-console.error(error);
+
+// If account does not exist, create one
+
+if(error.code === "auth/user-not-found"){
+
+
+
+try{
+
+
+await createUserWithEmailAndPassword(
+
+auth,
+
+email,
+
+password
+
+);
+
+
+
+alert("Account created successfully");
+
+
+window.location.href =
+"../pages/profile.html";
+
+
+
+}
+
+catch(createError){
+
+alert(createError.message);
+
+}
+
+
+}
+
+
+
+else{
 
 
 alert(error.message);
 
 
+}
 
-button.innerText="Continue";
 
 
 }
+
+
+
+button.innerText = "Continue";
 
 
 
