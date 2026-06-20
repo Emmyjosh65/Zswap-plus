@@ -52,7 +52,6 @@ color:#25d366;
 
 
 
-
 .profile-card{
 
 margin:20px;
@@ -77,16 +76,6 @@ object-fit:cover;
 
 
 
-.welcome{
-
-font-size:22px;
-font-weight:bold;
-
-}
-
-
-
-
 .grid{
 
 display:grid;
@@ -98,14 +87,12 @@ margin:20px;
 
 
 
-
 .card{
 
 background:#202c33;
 padding:25px;
 border-radius:15px;
 text-align:center;
-cursor:pointer;
 
 }
 
@@ -113,8 +100,8 @@ cursor:pointer;
 
 .card span{
 
-font-size:35px;
 display:block;
+font-size:35px;
 
 }
 
@@ -137,7 +124,6 @@ align-items:center;
 
 
 
-
 .bottom-nav a{
 
 color:white;
@@ -157,9 +143,24 @@ font-size:22px;
 }
 
 
+
+.badge{
+
+background:red;
+color:white;
+border-radius:50%;
+padding:3px 7px;
+font-size:12px;
+display:none;
+
+}
+
+
+
 </style>
 
 </head>
+
 
 
 
@@ -167,6 +168,9 @@ font-size:22px;
 
 
 <div class="app">
+
+
+
 
 
 <div class="header">
@@ -190,6 +194,8 @@ ZSwap Plus
 
 
 
+
+
 <div class="profile-card">
 
 
@@ -201,17 +207,20 @@ src="../assets/default-avatar.png"
 
 class="profile-image"
 
-
 >
 
 
+<h2>
 
-<h2 class="welcome">
+Hello,
 
-Hello, <span id="userName">User</span>
+<span id="userName">
+
+User
+
+</span>
 
 </h2>
-
 
 
 <p id="userEmail">
@@ -233,8 +242,9 @@ Loading...
 <div class="grid">
 
 
+<div class="card"
 
-<div class="card" onclick="location.href='chats.html'">
+onclick="location.href='chats.html'">
 
 <span>
 💬
@@ -247,7 +257,10 @@ Chats
 
 
 
-<div class="card" onclick="location.href='contacts.html'">
+
+<div class="card"
+
+onclick="location.href='contacts.html'">
 
 <span>
 👥
@@ -261,7 +274,9 @@ Contacts
 
 
 
-<div class="card" onclick="location.href='search-users.html'">
+<div class="card"
+
+onclick="location.href='search-users.html'">
 
 <span>
 🔍
@@ -275,7 +290,35 @@ Search Users
 
 
 
-<div class="card" onclick="location.href='settings.html'">
+<div class="card"
+
+onclick="location.href='notifications.html'">
+
+<span>
+🔔
+</span>
+
+Notifications
+
+
+<span id="notificationBadge"
+
+class="badge">
+
+0
+
+</span>
+
+
+</div>
+
+
+
+
+
+<div class="card"
+
+onclick="location.href='settings.html'">
 
 <span>
 ⚙️
@@ -297,12 +340,15 @@ Settings
 
 
 
+
 <div class="bottom-nav">
 
 
 <a href="home.html">
 
-<span>🏠</span>
+<span>
+🏠
+</span>
 
 Home
 
@@ -312,7 +358,9 @@ Home
 
 <a href="chats.html">
 
-<span>💬</span>
+<span>
+💬
+</span>
 
 Chats
 
@@ -322,7 +370,9 @@ Chats
 
 <a href="contacts.html">
 
-<span>👥</span>
+<span>
+👥
+</span>
 
 Contacts
 
@@ -330,9 +380,35 @@ Contacts
 
 
 
+
+<a href="notifications.html">
+
+<span>
+🔔
+</span>
+
+Notifications
+
+
+<span id="notificationBadge"
+
+class="badge">
+
+0
+
+</span>
+
+
+</a>
+
+
+
+
 <a href="settings.html">
 
-<span>⚙️</span>
+<span>
+⚙️
+</span>
 
 Settings
 
@@ -346,7 +422,10 @@ Settings
 
 
 
+
+
 </div>
+
 
 
 
@@ -358,6 +437,7 @@ Settings
 
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
+
 
 
 import {
@@ -387,15 +467,22 @@ from
 
 
 
+
+
 const userName =
+
 document.getElementById("userName");
 
 
+
 const userEmail =
+
 document.getElementById("userEmail");
 
 
+
 const profileImage =
+
 document.getElementById("profileImage");
 
 
@@ -409,9 +496,12 @@ onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
 
+
 window.location.href="../auth/login.html";
 
+
 return;
+
 
 }
 
@@ -419,15 +509,17 @@ return;
 
 
 
+
 userEmail.innerText =
+
 user.email;
 
 
 
 
 
-const snap =
-await getDoc(
+
+const snap = await getDoc(
 
 doc(db,"users",user.uid)
 
@@ -440,20 +532,23 @@ doc(db,"users",user.uid)
 if(snap.exists()){
 
 
-const data =
-snap.data();
+const data = snap.data();
 
 
 
 userName.innerText =
+
 data.name;
 
 
 
 if(data.photoURL){
 
+
 profileImage.src =
+
 data.photoURL;
+
 
 }
 
@@ -466,6 +561,16 @@ data.photoURL;
 });
 
 
+
+</script>
+
+
+
+
+
+<script type="module"
+
+src="../js/notification-badge.js">
 
 </script>
 
