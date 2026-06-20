@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZSwap Plus Profile</title>
+
+<link rel="stylesheet" href="../css/auth.css">
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+<div class="login-card">
+
+
+<div class="logo">
+Z+
+</div>
+
+
+<h1>Create Profile</h1>
+
+<p>
+Complete your ZSwap Plus account
+</p>
+
+
+<form id="profileForm">
+
+
+<div class="input-group">
+
+<label>Username</label>
+
+<input 
+type="text"
+id="username"
+placeholder="Enter username"
+required>
+
+</div>
+
+
+
+<div class="input-group">
+
+<label>Bio</label>
+
+<input 
+type="text"
+id="bio"
+placeholder="About you">
+
+</div>
+
+
+
+<div class="input-group">
+
+<label>Profile Picture URL</label>
+
+<input 
+type="text"
+id="photo"
+placeholder="Image link">
+
+</div>
+
+
+
+<button type="submit">
+Create Account
+</button>
+
+
+</form>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+
+document.getElementById("profileForm")
+.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+
+localStorage.setItem(
+"zswapUser",
+JSON.stringify({
+
+username:
+document.getElementById("username").value,
+
+bio:
+document.getElementById("bio").value,
+
+photo:
+document.getElementById("photo").value
+
+})
+);
+
+
+// Go to chats
+
+window.location.href="../pages/chats.html";
+
+
+});
+
+
+</script>
+
+
+</body>
+
+</html>
