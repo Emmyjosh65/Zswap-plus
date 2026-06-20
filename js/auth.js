@@ -2,9 +2,7 @@
 // ZSWAP PLUS - FIREBASE PHONE LOGIN
 // ===================================
 
-
 console.log("ZSwap Auth Loaded");
-
 
 
 import { auth } from "../firebase/firebase.js";
@@ -19,8 +17,6 @@ from
 
 
 
-
-
 const loginForm = document.getElementById("loginForm");
 
 const continueBtn = document.getElementById("continueBtn");
@@ -28,18 +24,7 @@ const continueBtn = document.getElementById("continueBtn");
 
 
 
-
-if (!loginForm) {
-
-    console.error("Login form not found");
-
-}
-
-
-
-
-
-// Setup Firebase Recaptcha
+// Visible Recaptcha for testing
 
 window.recaptchaVerifier = new RecaptchaVerifier(
 
@@ -49,7 +34,7 @@ window.recaptchaVerifier = new RecaptchaVerifier(
 
     {
 
-        size: "invisible"
+        size: "normal"
 
     }
 
@@ -58,15 +43,14 @@ window.recaptchaVerifier = new RecaptchaVerifier(
 
 
 
-
-loginForm.addEventListener("submit", async (event)=>{
-
-
-    event.preventDefault();
+loginForm.addEventListener("submit", async (e)=>{
 
 
+    e.preventDefault();
 
-    console.log("Continue button clicked");
+
+
+    console.log("Continue clicked");
 
 
 
@@ -80,15 +64,14 @@ loginForm.addEventListener("submit", async (event)=>{
 
 
 
-    const fullPhoneNumber =
+    const fullNumber =
     countryCode + phoneNumber;
-
 
 
 
     if(phoneNumber.length < 7){
 
-        alert("Please enter a valid phone number");
+        alert("Enter a valid phone number");
 
         return;
 
@@ -96,20 +79,10 @@ loginForm.addEventListener("submit", async (event)=>{
 
 
 
-
-
     try{
 
 
-        if(continueBtn){
-
-            continueBtn.innerText = "Sending OTP...";
-
-            continueBtn.disabled = true;
-
-        }
-
-
+        continueBtn.innerText = "Sending...";
 
 
 
@@ -119,31 +92,13 @@ loginForm.addEventListener("submit", async (event)=>{
 
             auth,
 
-            fullPhoneNumber,
+            fullNumber,
 
             window.recaptchaVerifier
 
         );
 
 
-
-
-
-        // Save phone
-
-        sessionStorage.setItem(
-
-            "zswapPhone",
-
-            fullPhoneNumber
-
-        );
-
-
-
-
-
-        // Save verification ID
 
         sessionStorage.setItem(
 
@@ -155,15 +110,17 @@ loginForm.addEventListener("submit", async (event)=>{
 
 
 
+        sessionStorage.setItem(
 
+            "zswapPhone",
 
-        console.log("OTP sent");
+            fullNumber
+
+        );
 
 
 
         alert("OTP sent successfully");
-
-
 
 
 
@@ -179,23 +136,15 @@ loginForm.addEventListener("submit", async (event)=>{
     catch(error){
 
 
-        console.error(
-            "Firebase Error:",
-            error
-        );
+        console.error(error);
 
 
         alert(error.message);
 
 
 
-        if(continueBtn){
-
-            continueBtn.innerText = "Continue";
-
-            continueBtn.disabled = false;
-
-        }
+        continueBtn.innerText =
+        "Continue";
 
 
     }
