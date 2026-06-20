@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZSwap Profile</title>
+
+<link rel="stylesheet" href="../css/auth.css">
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+<div class="login-card">
+
+<div class="logo">
+Z+
+</div>
+
+<h1>
+Welcome to ZSwap Plus
+</h1>
+
+<p id="userName">
+Loading...
+</p>
+
+<p id="userEmail">
+Loading...
+</p>
+
+<button id="logoutBtn">
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+const userName =
+sessionStorage.getItem("zswapName");
+
+const userEmail =
+sessionStorage.getItem("zswapEmail");
+
+
+document.getElementById("userName").innerText =
+userName || "ZSwap User";
+
+
+document.getElementById("userEmail").innerText =
+userEmail || "";
+
+
+document.getElementById("logoutBtn")
+.addEventListener("click", ()=>{
+
+sessionStorage.clear();
+
+window.location.href =
+"../auth/login.html";
+
+});
+
+</script>
+
+</body>
+
+</html>
