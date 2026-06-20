@@ -1,53 +1,97 @@
 // ===================================
-// ZSWAP PLUS - CHATS WITH PROFILE IMAGE
+// ZSWAP PLUS - CHATS WITH PROFILE DATA
 // ===================================
+
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-import {
-onAuthStateChanged
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 import {
-collection,
-getDocs
+
+onAuthStateChanged
+
 }
+
 from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+
+import {
+
+collection,
+getDocs,
+doc,
+updateDoc
+
+}
+
+from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
+
+
 const userList =
+
 document.getElementById("userList");
+
+
+
+
+
 
 
 onAuthStateChanged(auth, async(currentUser)=>{
 
 
+
 if(!currentUser){
+
 
 window.location.href="../auth/login.html";
 
+
 return;
+
 
 }
 
 
 
-const snapshot =
-await getDocs(collection(db,"users"));
 
 
 
-userList.innerHTML="";
+const snapshot = await getDocs(
+
+collection(db,"users")
+
+);
 
 
 
-snapshot.forEach((doc)=>{
 
 
-const user = doc.data();
+
+userList.innerHTML = "";
+
+
+
+
+
+
+
+snapshot.forEach(async(userDoc)=>{
+
+
+
+const user = userDoc.data();
+
+
 
 
 
@@ -59,19 +103,68 @@ return;
 
 
 
-const status =
-user.online ? "🟢 Online" : "⚫ Offline";
-
 
 
 const image =
-user.photoURL || "../assets/default-avatar.png";
+
+user.photoURL ||
+
+"../assets/default-avatar.png";
+
+
+
+
+
+
+const name =
+
+user.name ||
+
+"User";
+
+
+
+
+
+const username =
+
+user.username
+
+?
+
+"@" + user.username
+
+:
+
+"";
+
+
+
+
+
+
+const status =
+
+user.online
+
+?
+
+"🟢 Online"
+
+:
+
+"⚫ Offline";
+
+
 
 
 
 
 const card =
+
 document.createElement("div");
+
+
 
 
 
@@ -79,52 +172,122 @@ card.className="user-card";
 
 
 
+
+
+
 card.innerHTML = `
+
+
 
 <img
 
 src="${image}"
 
-style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
+class="avatar"
+
+
 
 >
 
 
-<div>
 
-<h3>${user.name}</h3>
+<div class="user-info">
 
-<p>${status}</p>
+
+
+<div class="username">
+
+${name}
 
 </div>
+
+
+
+<div class="email">
+
+${username}
+
+</div>
+
+
+
+<div class="online">
+
+${status}
+
+</div>
+
+
+
+</div>
+
+
 
 `;
 
 
 
-card.onclick=()=>{
+
+
+
+
+
+card.onclick = ()=>{
+
+
+
 
 
 sessionStorage.setItem(
+
 "chatUserId",
+
 user.uid
+
 );
+
+
+
 
 
 sessionStorage.setItem(
+
 "chatUserName",
-user.name
+
+name
+
 );
+
+
+
+
+
+sessionStorage.setItem(
+
+"chatUserImage",
+
+image
+
+);
+
+
+
 
 
 window.location.href="chat.html";
+
 
 
 };
 
 
 
+
+
+
 userList.appendChild(card);
+
+
 
 
 
