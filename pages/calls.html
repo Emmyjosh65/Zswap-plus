@@ -8,7 +8,173 @@
 
 <title>ZSwap Plus Calls</title>
 
-<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="../css/auth.css">
+
+
+<style>
+
+body{
+
+margin:0;
+
+background:#0b141a;
+
+color:white;
+
+font-family:Poppins,Arial,sans-serif;
+
+}
+
+
+.app{
+
+min-height:100vh;
+
+padding-bottom:80px;
+
+}
+
+
+.header{
+
+background:#202c33;
+
+padding:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+
+.logo{
+
+font-size:28px;
+
+font-weight:bold;
+
+color:#25d366;
+
+}
+
+
+
+.call-card{
+
+margin:20px;
+
+background:#202c33;
+
+padding:20px;
+
+border-radius:15px;
+
+}
+
+
+
+.call-item{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:15px 0;
+
+border-bottom:1px solid #2a3942;
+
+}
+
+
+
+.user{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+
+
+.avatar{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:#25d366;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:22px;
+
+}
+
+
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+height:70px;
+
+background:#202c33;
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+}
+
+
+
+.bottom-nav a{
+
+color:white;
+
+text-decoration:none;
+
+font-size:12px;
+
+text-align:center;
+
+}
+
+
+
+.bottom-nav span{
+
+display:block;
+
+font-size:22px;
+
+}
+
+
+
+</style>
 
 </head>
 
@@ -19,34 +185,49 @@
 <div class="app">
 
 
-<header>
+<div class="header">
 
-<h1>Calls</h1>
+<div class="logo">
+Z+
+</div>
 
-<button>
-☎
-</button>
+<h2>
+Calls
+</h2>
 
-</header>
-
-
-
-<div class="call-list">
+</div>
 
 
-<div class="call">
+
+
+<div class="call-card">
+
+
+<h2>
+Recent Calls
+</h2>
+
+
+
+<div class="call-item">
+
+
+<div class="user">
+
 
 <div class="avatar">
-A
+👤
 </div>
 
 
 <div>
 
-<h3>Alex</h3>
+<h3>
+No calls yet
+</h3>
 
 <p>
-↗ Incoming call • Today 10:30 AM
+Your call history will appear here
 </p>
 
 </div>
@@ -55,25 +236,8 @@ A
 </div>
 
 
-
-<div class="call">
-
-<div class="avatar">
-M
-</div>
-
-
 <div>
-
-<h3>Mike</h3>
-
-<p>
-↙ Missed call • Yesterday
-</p>
-
-</div>
-
-
+📞
 </div>
 
 
@@ -81,21 +245,61 @@ M
 
 
 
-<nav>
+</div>
+
+
+
+
+
+
+<div class="bottom-nav">
+
+
+<a href="home.html">
+
+<span>🏠</span>
+Home
+
+</a>
+
+
 
 <a href="chats.html">
+
+<span>💬</span>
 Chats
+
 </a>
+
+
 
 <a href="status.html">
+
+<span>⭕</span>
 Status
+
 </a>
+
+
 
 <a href="calls.html">
+
+<span>📞</span>
 Calls
+
 </a>
 
-</nav>
+
+
+<a href="settings.html">
+
+<span>⚙️</span>
+Settings
+
+</a>
+
+
+</div>
 
 
 
