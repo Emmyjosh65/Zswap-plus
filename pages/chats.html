@@ -4,13 +4,232 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ZSwap Plus Chats</title>
 
-<link rel="stylesheet" href="../css/app.css">
+<link rel="stylesheet" href="../css/auth.css">
+
+
+<style>
+
+body{
+
+margin:0;
+
+background:#0b141a;
+
+color:white;
+
+font-family:Poppins,Arial,sans-serif;
+
+}
+
+
+
+.app{
+
+min-height:100vh;
+
+padding-bottom:80px;
+
+}
+
+
+
+.header{
+
+background:#202c33;
+
+padding:20px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+
+
+.logo{
+
+font-size:28px;
+
+font-weight:bold;
+
+color:#25d366;
+
+}
+
+
+
+.search{
+
+margin:15px;
+
+background:#202c33;
+
+border-radius:20px;
+
+padding:12px;
+
+}
+
+
+
+.search input{
+
+width:100%;
+
+border:none;
+
+outline:none;
+
+background:none;
+
+color:white;
+
+font-size:16px;
+
+}
+
+
+
+.chat{
+
+display:flex;
+
+align-items:center;
+
+padding:15px;
+
+border-bottom:1px solid #2a3942;
+
+}
+
+
+
+.avatar{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:#25d366;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:22px;
+
+margin-right:15px;
+
+}
+
+
+
+.chat-info h3{
+
+margin:0;
+
+}
+
+
+
+.chat-info p{
+
+margin:5px 0;
+
+color:#aaa;
+
+}
+
+
+
+.new-chat{
+
+position:fixed;
+
+right:20px;
+
+bottom:90px;
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+border:none;
+
+background:#25d366;
+
+font-size:25px;
+
+}
+
+
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+height:70px;
+
+background:#202c33;
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+}
+
+
+
+.bottom-nav a{
+
+color:white;
+
+text-decoration:none;
+
+font-size:12px;
+
+text-align:center;
+
+}
+
+
+
+.bottom-nav span{
+
+display:block;
+
+font-size:22px;
+
+}
+
+
+
+</style>
 
 </head>
+
 
 
 <body>
@@ -19,69 +238,124 @@
 <div class="app">
 
 
-<header>
 
-<h1>ZSwap Plus</h1>
+<div class="header">
 
-<button>
-＋
-</button>
 
-</header>
+<div class="logo">
+Z+
+</div>
+
+
+<h2>
+Chats
+</h2>
+
+
+</div>
+
+
 
 
 
 <div class="search">
 
-<input 
-type="text"
-placeholder="Search chats">
+<input placeholder="Search chats">
 
 </div>
 
 
 
-<div class="chat-list">
+
 
 
 <div class="chat">
 
+
 <div class="avatar">
-Z
+👤
 </div>
 
 
-<div>
+<div class="chat-info">
 
-<h3>Welcome to ZSwap Plus</h3>
+<h3>
+No chats yet
+</h3>
 
-<p>Your messages will appear here</p>
-
-</div>
-
-
-</div>
-
+<p>
+Start a new conversation
+</p>
 
 </div>
 
 
+</div>
 
-<nav>
+
+
+
+
+<button class="new-chat">
+
++
+
+</button>
+
+
+
+
+
+<div class="bottom-nav">
+
+
+<a href="home.html">
+
+<span>🏠</span>
+Home
+
+</a>
+
+
 
 <a href="chats.html">
+
+<span>💬</span>
 Chats
+
 </a>
+
+
 
 <a href="status.html">
+
+<span>⭕</span>
 Status
+
 </a>
+
+
 
 <a href="calls.html">
+
+<span>📞</span>
 Calls
+
 </a>
 
-</nav>
+
+
+<a href="settings.html">
+
+<span>⚙️</span>
+Settings
+
+</a>
+
+
+
+</div>
+
 
 
 </div>
