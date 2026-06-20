@@ -8,52 +8,58 @@
 
 <title>ZSwap Plus Settings</title>
 
-<link rel="stylesheet" href="../css/auth.css">
-
 
 <style>
 
 body{
+
 margin:0;
 background:#0b141a;
 color:white;
 font-family:Poppins,Arial,sans-serif;
+
 }
+
 
 
 .app{
+
 min-height:100vh;
 padding-bottom:80px;
+
 }
 
 
+
 .header{
+
 background:#202c33;
 padding:20px;
 display:flex;
 align-items:center;
 gap:15px;
+
 }
+
 
 
 .logo{
+
 font-size:28px;
 font-weight:bold;
 color:#25d366;
+
 }
+
 
 
 
 .profile-card{
 
 margin:20px;
-
 background:#202c33;
-
 padding:25px;
-
 border-radius:15px;
-
 text-align:center;
 
 }
@@ -63,25 +69,38 @@ text-align:center;
 .profile-image{
 
 width:90px;
-
 height:90px;
-
 border-radius:50%;
-
 object-fit:cover;
 
 }
 
 
 
+
+#userUsername{
+
+color:#25d366;
+
+}
+
+
+
+#userBio{
+
+color:#aaa;
+
+}
+
+
+
+
+
 .option{
 
 margin:15px 20px;
-
 padding:18px;
-
 background:#202c33;
-
 border-radius:12px;
 
 }
@@ -91,10 +110,7 @@ border-radius:12px;
 .option a{
 
 color:white;
-
 text-decoration:none;
-
-display:block;
 
 }
 
@@ -103,43 +119,30 @@ display:block;
 button{
 
 width:90%;
-
 margin:20px;
-
 padding:15px;
-
 border:none;
-
 border-radius:25px;
-
 background:#25d366;
-
 color:white;
-
 font-size:16px;
 
 }
 
 
 
+
+
 .bottom-nav{
 
 position:fixed;
-
 bottom:0;
-
 left:0;
-
 width:100%;
-
 height:70px;
-
 background:#202c33;
-
 display:flex;
-
 justify-content:space-around;
-
 align-items:center;
 
 }
@@ -149,11 +152,8 @@ align-items:center;
 .bottom-nav a{
 
 color:white;
-
 text-decoration:none;
-
 font-size:12px;
-
 text-align:center;
 
 }
@@ -163,7 +163,6 @@ text-align:center;
 .bottom-nav span{
 
 display:block;
-
 font-size:22px;
 
 }
@@ -174,6 +173,9 @@ font-size:22px;
 </head>
 
 
+
+
+
 <body>
 
 
@@ -181,17 +183,28 @@ font-size:22px;
 
 
 
+
+
 <div class="header">
 
+
 <div class="logo">
+
 Z+
+
 </div>
+
 
 <h2>
+
 Settings
+
 </h2>
 
+
 </div>
+
+
 
 
 
@@ -213,11 +226,29 @@ class="profile-image"
 
 
 
+
+
 <h2 id="userName">
 
 Loading...
 
 </h2>
+
+
+
+
+<p id="userUsername">
+
+</p>
+
+
+
+
+<p id="userBio">
+
+</p>
+
+
 
 
 
@@ -229,7 +260,10 @@ Loading...
 
 
 
+
 </div>
+
+
 
 
 
@@ -248,11 +282,13 @@ Loading...
 
 
 
+
 <div class="option">
 
 🔒 Privacy
 
 </div>
+
 
 
 
@@ -267,11 +303,13 @@ Loading...
 
 
 
+
 <button id="logoutBtn">
 
 Logout
 
 </button>
+
 
 
 
@@ -312,11 +350,12 @@ Status
 
 
 
-<a href="calls.html">
 
-<span>📞</span>
+<a href="notifications.html">
 
-Calls
+<span>🔔</span>
+
+Notifications
 
 </a>
 
@@ -336,6 +375,10 @@ Settings
 
 
 
+
+
+
+
 </div>
 
 
@@ -344,157 +387,10 @@ Settings
 
 
 
-<script type="module">
 
+<script type="module" src="../js/settings.js"></script>
 
-import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-
-
-import {
-
-onAuthStateChanged,
-
-signOut
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-
-import {
-
-doc,
-
-getDoc
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-
-
-
-const userName =
-
-document.getElementById("userName");
-
-
-
-const userEmail =
-
-document.getElementById("userEmail");
-
-
-
-const profileImage =
-
-document.getElementById("profileImage");
-
-
-
-
-
-
-onAuthStateChanged(auth, async(user)=>{
-
-
-
-if(user){
-
-
-
-userEmail.innerText = user.email;
-
-
-
-
-const userSnap = await getDoc(
-
-doc(db,"users",user.uid)
-
-);
-
-
-
-
-
-if(userSnap.exists()){
-
-
-
-const data = userSnap.data();
-
-
-
-userName.innerText = data.name;
-
-
-
-if(data.photoURL){
-
-
-profileImage.src = data.photoURL;
-
-
-}
-
-
-
-}
-
-
-
-
-
-}
-
-else{
-
-
-window.location.href="../auth/login.html";
-
-
-}
-
-
-
-});
-
-
-
-
-
-
-
-
-document.getElementById("logoutBtn")
-
-.addEventListener("click", async()=>{
-
-
-
-await signOut(auth);
-
-
-
-window.location.href="../auth/login.html";
-
-
-
-});
-
-
-
-</script>
-
-<script type="module" src="../js/status-online.js"></script>
 
 </body>
 
