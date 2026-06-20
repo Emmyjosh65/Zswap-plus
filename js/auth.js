@@ -2,6 +2,7 @@
 // ZSWAP PLUS - FIREBASE PHONE LOGIN
 // ===================================
 
+alert("AUTH JS IS WORKING");
 
 console.log("ZSwap Firebase Auth Loaded");
 
