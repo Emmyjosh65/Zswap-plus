@@ -1,43 +1,25 @@
 // ===================================
-// ZSWAP PLUS - CHATS WITH ONLINE STATUS
+// ZSWAP PLUS - CHATS WITH PROFILE IMAGE
 // ===================================
-
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-
 import {
-
 onAuthStateChanged
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 import {
-
 collection,
-getDocs,
-doc,
-getDoc
-
+getDocs
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-
-
-const userList = document.getElementById("userList");
-
-
-
+const userList =
+document.getElementById("userList");
 
 
 onAuthStateChanged(auth, async(currentUser)=>{
@@ -45,86 +27,67 @@ onAuthStateChanged(auth, async(currentUser)=>{
 
 if(!currentUser){
 
-
 window.location.href="../auth/login.html";
 
-
 return;
-
 
 }
 
 
 
-
-const usersSnapshot = await getDocs(
-
-collection(db,"users")
-
-);
+const snapshot =
+await getDocs(collection(db,"users"));
 
 
 
-userList.innerHTML = "";
+userList.innerHTML="";
 
 
 
+snapshot.forEach((doc)=>{
 
 
-for(const userDoc of usersSnapshot.docs){
-
-
-
-const user = userDoc.data();
+const user = doc.data();
 
 
 
 if(user.uid === currentUser.uid){
 
-continue;
+return;
 
 }
 
 
 
-const statusSnap = await getDoc(
-
-doc(db,"users",user.uid)
-
-);
-
-
-
-const data = statusSnap.data();
-
-
-
 const status =
-data.online ? "🟢 Online" : "⚫ Offline";
+user.online ? "🟢 Online" : "⚫ Offline";
+
+
+
+const image =
+user.photoURL || "../assets/default-avatar.png";
 
 
 
 
-
-const userCard = document.createElement("div");
-
-
-
-userCard.className="user-card";
+const card =
+document.createElement("div");
 
 
 
+card.className="user-card";
 
 
-userCard.innerHTML = `
 
+card.innerHTML = `
 
-<div class="avatar">
+<img
 
-👤
+src="${image}"
 
-</div>
+style="width:50px;height:50px;border-radius:50%;object-fit:cover;"
 
+>
 
 
 <div>
@@ -135,34 +98,23 @@ userCard.innerHTML = `
 
 </div>
 
-
 `;
 
 
 
-
-
-userCard.onclick = ()=>{
+card.onclick=()=>{
 
 
 sessionStorage.setItem(
-
 "chatUserId",
-
 user.uid
-
 );
-
 
 
 sessionStorage.setItem(
-
 "chatUserName",
-
 user.name
-
 );
-
 
 
 window.location.href="chat.html";
@@ -172,13 +124,11 @@ window.location.href="chat.html";
 
 
 
-
-
-userList.appendChild(userCard);
+userList.appendChild(card);
 
 
 
-}
+});
 
 
 
