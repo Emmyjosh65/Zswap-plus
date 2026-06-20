@@ -1,1 +1,252 @@
+/* ===================================
+   ZSWAP PLUS AUTH STYLE
+=================================== */
 
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins', sans-serif;
+}
+
+
+
+body{
+
+    min-height:100vh;
+
+    background:#0b141a;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    color:white;
+
+}
+
+
+
+.login-container{
+
+    width:100%;
+
+    padding:20px;
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+
+
+.login-card{
+
+    width:100%;
+
+    max-width:420px;
+
+    background:#111b21;
+
+    padding:35px 30px;
+
+    border-radius:25px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,0.4);
+
+    text-align:center;
+
+}
+
+
+
+
+.logo{
+
+    width:75px;
+
+    height:75px;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    background:#00a884;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+
+
+h1{
+
+    font-size:28px;
+
+    margin-bottom:10px;
+
+}
+
+
+
+p{
+
+    color:#aebac1;
+
+    font-size:14px;
+
+    margin-bottom:25px;
+
+}
+
+
+
+
+.input-group{
+
+    text-align:left;
+
+    margin-bottom:20px;
+
+}
+
+
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    color:#d1d7db;
+
+}
+
+
+
+.input-group input,
+
+.input-group select{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    outline:none;
+
+    border-radius:12px;
+
+    background:#202c33;
+
+    color:white;
+
+    font-size:15px;
+
+}
+
+
+
+.input-group select option{
+
+    background:#202c33;
+
+}
+
+
+
+
+
+button{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:25px;
+
+    background:#00a884;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+
+
+button:hover{
+
+    background:#06cf9c;
+
+}
+
+
+
+
+
+.terms{
+
+    margin-top:25px;
+
+    font-size:12px;
+
+    color:#8696a0;
+
+}
+
+
+
+
+
+#recaptcha-container{
+
+    margin:10px 0;
+
+}
+
+
+
+
+
+@media(max-width:480px){
+
+    .login-card{
+
+        padding:30px 20px;
+
+    }
+
+
+    h1{
+
+        font-size:24px;
+
+    }
+
+}
