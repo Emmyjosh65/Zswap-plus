@@ -2,9 +2,8 @@
 // ZSWAP PLUS - FIREBASE PHONE LOGIN
 // ===================================
 
-alert("AUTH JS IS WORKING");
 
-console.log("ZSwap Firebase Auth Loaded");
+console.log("ZSwap Auth Loaded");
 
 
 
@@ -22,21 +21,27 @@ from
 
 
 
-const loginForm =
-document.getElementById("loginForm");
+const loginForm = document.getElementById("loginForm");
 
-
-const continueBtn =
-document.getElementById("continueBtn");
+const continueBtn = document.getElementById("continueBtn");
 
 
 
 
 
-// Create Firebase Recaptcha
+if (!loginForm) {
 
-window.recaptchaVerifier =
-new RecaptchaVerifier(
+    console.error("Login form not found");
+
+}
+
+
+
+
+
+// Setup Firebase Recaptcha
+
+window.recaptchaVerifier = new RecaptchaVerifier(
 
     auth,
 
@@ -44,13 +49,7 @@ new RecaptchaVerifier(
 
     {
 
-        size: "invisible",
-
-        callback: () => {
-
-            console.log("Recaptcha verified");
-
-        }
+        size: "invisible"
 
     }
 
@@ -60,127 +59,146 @@ new RecaptchaVerifier(
 
 
 
+loginForm.addEventListener("submit", async (event)=>{
 
-loginForm.addEventListener("submit", async (e)=>{
 
+    event.preventDefault();
 
-e.preventDefault();
 
 
+    console.log("Continue button clicked");
 
-const countryCode =
-document.getElementById("countryCode").value;
 
 
+    const countryCode =
+    document.getElementById("countryCode").value;
 
-const phoneNumber =
-document.getElementById("phoneNumber").value.trim();
 
 
+    const phoneNumber =
+    document.getElementById("phoneNumber").value.trim();
 
-const fullPhoneNumber =
-countryCode + phoneNumber;
 
 
+    const fullPhoneNumber =
+    countryCode + phoneNumber;
 
 
 
-if(phoneNumber.length < 7){
 
-alert("Enter a valid phone number");
+    if(phoneNumber.length < 7){
 
-return;
+        alert("Please enter a valid phone number");
 
-}
+        return;
 
+    }
 
 
 
-try{
 
 
-continueBtn.innerText = "Sending...";
+    try{
 
-continueBtn.disabled = true;
 
+        if(continueBtn){
 
+            continueBtn.innerText = "Sending OTP...";
 
+            continueBtn.disabled = true;
 
+        }
 
-const confirmationResult =
 
-await signInWithPhoneNumber(
 
-    auth,
 
-    fullPhoneNumber,
 
-    window.recaptchaVerifier
+        const confirmationResult =
 
-);
+        await signInWithPhoneNumber(
 
+            auth,
 
+            fullPhoneNumber,
 
+            window.recaptchaVerifier
 
+        );
 
-// Save phone
 
-sessionStorage.setItem(
 
-    "zswapPhone",
 
-    fullPhoneNumber
 
-);
+        // Save phone
 
+        sessionStorage.setItem(
 
+            "zswapPhone",
 
+            fullPhoneNumber
 
+        );
 
-// Save verification ID
 
-sessionStorage.setItem(
 
-    "verificationId",
 
-    confirmationResult.verificationId
 
-);
+        // Save verification ID
 
+        sessionStorage.setItem(
 
+            "verificationId",
 
+            confirmationResult.verificationId
 
+        );
 
-alert("OTP sent successfully");
 
 
 
 
+        console.log("OTP sent");
 
-window.location.href =
-"verify.html";
 
 
+        alert("OTP sent successfully");
 
-}
 
-catch(error){
 
 
-console.error(error);
 
+        window.location.href =
+        "verify.html";
 
-alert(error.message);
 
 
+    }
 
-continueBtn.innerText = "Continue";
 
-continueBtn.disabled = false;
 
+    catch(error){
 
 
-}
+        console.error(
+            "Firebase Error:",
+            error
+        );
+
+
+        alert(error.message);
+
+
+
+        if(continueBtn){
+
+            continueBtn.innerText = "Continue";
+
+            continueBtn.disabled = false;
+
+        }
+
+
+    }
 
 
 
