@@ -1,154 +1,160 @@
-alert("ZSwap auth.js is running");
 // ===================================
-// ZSWAP PLUS - FIREBASE PHONE LOGIN
+// ZSWAP PLUS FIREBASE PHONE LOGIN
 // ===================================
 
-console.log("ZSwap Auth Loaded");
+
+alert("AUTH FILE LOADED");
 
 
-import { auth } from "../firebase/firebase.js";
+import { auth } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
-    RecaptchaVerifier,
-    signInWithPhoneNumber
+
+RecaptchaVerifier,
+
+signInWithPhoneNumber
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
 
 
 
 const loginForm = document.getElementById("loginForm");
 
-const continueBtn = document.getElementById("continueBtn");
+const button = document.getElementById("continueBtn");
 
 
 
 
-// Visible Recaptcha for testing
 
 window.recaptchaVerifier = new RecaptchaVerifier(
 
-    auth,
+auth,
 
-    "recaptcha-container",
+"recaptcha-container",
 
-    {
+{
 
-        size: "normal"
+size:"normal"
 
-    }
+}
 
 );
 
 
 
 
-loginForm.addEventListener("submit", async (e)=>{
 
+loginForm.addEventListener("submit", async(e)=>{
 
-    e.preventDefault();
 
+e.preventDefault();
 
 
-    console.log("Continue clicked");
 
+console.log("Continue clicked");
 
 
-    const countryCode =
-    document.getElementById("countryCode").value;
 
+const code =
 
+document.getElementById("countryCode").value;
 
-    const phoneNumber =
-    document.getElementById("phoneNumber").value.trim();
 
 
+const phone =
 
-    const fullNumber =
-    countryCode + phoneNumber;
+document.getElementById("phoneNumber").value.trim();
 
 
 
-    if(phoneNumber.length < 7){
+const fullNumber = code + phone;
 
-        alert("Enter a valid phone number");
 
-        return;
 
-    }
 
+if(phone.length < 7){
 
+alert("Enter a valid phone number");
 
-    try{
+return;
 
+}
 
-        continueBtn.innerText = "Sending...";
 
 
 
-        const confirmationResult =
+try{
 
-        await signInWithPhoneNumber(
 
-            auth,
+button.innerText="Sending...";
 
-            fullNumber,
 
-            window.recaptchaVerifier
 
-        );
+const confirmationResult =
 
+await signInWithPhoneNumber(
 
+auth,
 
-        sessionStorage.setItem(
+fullNumber,
 
-            "verificationId",
+window.recaptchaVerifier
 
-            confirmationResult.verificationId
+);
 
-        );
 
 
+sessionStorage.setItem(
 
-        sessionStorage.setItem(
+"verificationId",
 
-            "zswapPhone",
+confirmationResult.verificationId
 
-            fullNumber
+);
 
-        );
 
 
+sessionStorage.setItem(
 
-        alert("OTP sent successfully");
+"zswapPhone",
 
+fullNumber
 
+);
 
-        window.location.href =
-        "verify.html";
 
 
+alert("OTP sent successfully");
 
-    }
 
 
+window.location.href="verify.html";
 
-    catch(error){
 
 
-        console.error(error);
+}
 
+catch(error){
 
-        alert(error.message);
 
+console.error(error);
 
 
-        continueBtn.innerText =
-        "Continue";
+alert(error.message);
 
 
-    }
+
+button.innerText="Continue";
+
+
+}
 
 
 
