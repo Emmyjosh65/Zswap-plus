@@ -1,5 +1,5 @@
 // ===================================
-// ZSWAP PLUS - STATUS SYSTEM
+// ZSWAP PLUS - CREATE STATUS WITH EXPIRY
 // ===================================
 
 
@@ -31,8 +31,6 @@ from
 
 
 
-
-
 const statusText =
 document.getElementById("statusText");
 
@@ -46,22 +44,16 @@ let currentUser = null;
 
 
 
-
-
 onAuthStateChanged(auth,(user)=>{
 
 
 if(!user){
 
-
 window.location.href="../auth/login.html";
-
 
 return;
 
-
 }
-
 
 
 currentUser = user;
@@ -74,36 +66,40 @@ currentUser = user;
 
 
 
-
-
 postBtn.addEventListener("click", async()=>{
 
 
-const text =
-
-statusText.value.trim();
-
-
+const text = statusText.value.trim();
 
 
 
 if(text === ""){
 
-
 alert("Write something first");
 
 return;
-
 
 }
 
 
 
 
-
-
-
 try{
+
+
+const now = new Date();
+
+
+// 24 hours later
+
+const expiry = new Date(
+
+now.getTime() + 24 * 60 * 60 * 1000
+
+);
+
+
+
 
 
 await addDoc(
@@ -116,13 +112,40 @@ collection(db,"statuses"),
 userId:currentUser.uid,
 
 
-name:currentUser.email.split("@")[0],
+name:
+
+currentUser.email.split("@")[0],
 
 
 text:text,
 
 
-createdAt:serverTimestamp()
+createdAt:serverTimestamp(),
+
+
+expiresAt:expiry,
+
+
+views:[],
+
+
+reactions:{
+
+
+"❤️":0,
+
+
+"😂":0,
+
+
+"🔥":0,
+
+
+"👍":0
+
+
+}
+
 
 
 }
@@ -133,16 +156,13 @@ createdAt:serverTimestamp()
 
 
 
-alert("Status posted successfully");
-
+alert("Status posted");
 
 
 statusText.value="";
 
 
-
 window.location.href="status.html";
-
 
 
 }
