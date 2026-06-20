@@ -33,18 +33,28 @@ from
 
 
 
-const nameInput = document.getElementById("name");
-
-const profileImage = document.getElementById("profileImage");
-
-const saveBtn = document.getElementById("saveBtn");
+const nameInput =
+document.getElementById("name");
 
 
+const usernameInput =
+document.getElementById("username");
 
-let userId;
 
-let avatar =
-"../assets/default-avatar.png";
+const bioInput =
+document.getElementById("bio");
+
+
+const saveBtn =
+document.getElementById("saveBtn");
+
+
+
+
+
+let userId = null;
+
+
 
 
 
@@ -53,52 +63,68 @@ let avatar =
 onAuthStateChanged(auth, async(user)=>{
 
 
-if(user){
+if(!user){
+
+
+window.location.href="../auth/login.html";
+
+
+return;
+
+
+}
+
 
 
 userId = user.uid;
 
 
 
-const userData = await getDoc(
 
-doc(db,"users",user.uid)
+
+const userRef = doc(
+
+db,
+
+"users",
+
+user.uid
 
 );
 
 
 
-if(userData.exists()){
 
 
-const data = userData.data();
-
-
-
-nameInput.value = data.name;
+const snap = await getDoc(userRef);
 
 
 
-if(data.photoURL){
-
-profileImage.src = data.photoURL;
-
-avatar = data.photoURL;
-
-}
 
 
+if(snap.exists()){
 
-}
+
+const data = snap.data();
 
 
 
-}
+nameInput.value =
 
-else{
+data.name || "";
 
 
-window.location.href="../auth/login.html";
+
+usernameInput.value =
+
+data.username || "";
+
+
+
+bioInput.value =
+
+data.bio || "";
+
 
 
 }
@@ -112,24 +138,14 @@ window.location.href="../auth/login.html";
 
 
 
-window.changeAvatar = function(image){
-
-
-avatar = image;
-
-
-profileImage.src = image;
-
-
-}
-
-
-
-
-
 
 
 saveBtn.addEventListener("click", async()=>{
+
+
+
+try{
+
 
 
 await updateDoc(
@@ -138,13 +154,21 @@ doc(db,"users",userId),
 
 {
 
-name:nameInput.value,
 
-photoURL:avatar
+name:nameInput.value.trim(),
+
+
+username:usernameInput.value.trim(),
+
+
+bio:bioInput.value.trim()
+
 
 }
 
 );
+
+
 
 
 
@@ -153,6 +177,20 @@ alert("Profile updated successfully");
 
 
 window.location.href="settings.html";
+
+
+
+}
+
+
+
+catch(error){
+
+
+alert(error.message);
+
+
+}
 
 
 
