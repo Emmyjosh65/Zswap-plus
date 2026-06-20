@@ -1,39 +1,25 @@
 // ===================================
-// ZSWAP PLUS - CONTACTS
+// ZSWAP PLUS - CONTACTS WITH ONLINE STATUS
 // ===================================
-
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-
 import {
-
 onAuthStateChanged
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 import {
-
 doc,
 getDoc
-
 }
-
 from
-
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-
-
-const contactsBox = document.getElementById("contacts");
-
-
+const contactsBox =
+document.getElementById("contacts");
 
 
 
@@ -50,77 +36,71 @@ return;
 
 
 
+const userSnap = await getDoc(
 
-
-const userRef = doc(
-
-db,
-
-"users",
-
-user.uid
+doc(db,"users",user.uid)
 
 );
-
-
-
-const userSnap = await getDoc(userRef);
-
-
 
 
 
 if(userSnap.exists()){
 
 
-const data = userSnap.data();
+const contacts =
+userSnap.data().contacts || [];
 
 
 
-const contacts = data.contacts || [];
-
-
-
-contactsBox.innerHTML = "";
-
-
+contactsBox.innerHTML="";
 
 
 
 if(contacts.length === 0){
 
-
 contactsBox.innerHTML =
-
 "No contacts added yet";
 
-
 return;
-
 
 }
 
 
 
+contacts.forEach(async(contact)=>{
 
 
 
-contacts.forEach((contact)=>{
+const contactSnap = await getDoc(
 
+doc(db,"users",contact.uid)
 
-const card = document.createElement("div");
-
-
-card.className = "contact-card";
+);
 
 
 
-card.innerHTML = `
+const data = contactSnap.data();
+
+
+
+const online =
+data.online ? "🟢 Online" : "⚫ Offline";
+
+
+
+const card =
+document.createElement("div");
+
+
+
+card.className="contact-card";
+
+
+
+card.innerHTML=`
 
 <div class="avatar">
-
 👤
-
 </div>
 
 
@@ -128,52 +108,38 @@ card.innerHTML = `
 
 <h3>${contact.name}</h3>
 
-<p>${contact.email}</p>
+<p>${online}</p>
 
 </div>
 
 
 <button>
-
 Chat
-
 </button>
 
 `;
 
 
 
-
-
-card.querySelector("button").onclick = ()=>{
+card.querySelector("button").onclick=()=>{
 
 
 sessionStorage.setItem(
-
 "chatUserId",
-
 contact.uid
-
 );
-
 
 
 sessionStorage.setItem(
-
 "chatUserName",
-
 contact.name
-
 );
-
 
 
 window.location.href="chat.html";
 
 
 };
-
-
 
 
 
@@ -185,10 +151,7 @@ contactsBox.appendChild(card);
 
 
 
-
-
 }
-
 
 
 });
