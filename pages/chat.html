@@ -8,41 +8,91 @@
 
 <title>ZSwap Plus Chat</title>
 
+
 <style>
 
 body{
+
 margin:0;
 background:#0b141a;
 color:white;
 font-family:Poppins,Arial,sans-serif;
+
 }
+
 
 
 .chat-app{
+
 height:100vh;
 display:flex;
 flex-direction:column;
+
 }
+
+
 
 
 .header{
+
 background:#202c33;
-padding:15px;
+padding:12px 15px;
 display:flex;
 align-items:center;
-gap:15px;
+gap:12px;
+
 }
+
+
+
+
+.back{
+
+font-size:25px;
+cursor:pointer;
+}
+
 
 
 .avatar{
+
 width:45px;
 height:45px;
 border-radius:50%;
-background:#25d366;
-display:flex;
-align-items:center;
-justify-content:center;
+object-fit:cover;
+
 }
+
+
+
+
+
+.profile-info{
+
+display:flex;
+flex-direction:column;
+
+}
+
+
+
+.profile-info h3{
+
+margin:0;
+font-size:17px;
+
+}
+
+
+
+.profile-info small{
+
+color:#25d366;
+
+}
+
+
+
 
 
 .messages{
@@ -55,15 +105,18 @@ overflow-y:auto;
 
 
 
+
 .message{
 
 background:#202c33;
-padding:10px;
+padding:10px 14px;
 border-radius:10px;
 margin-bottom:10px;
 max-width:70%;
+word-wrap:break-word;
 
 }
+
 
 
 
@@ -73,6 +126,8 @@ margin-left:auto;
 background:#005c4b;
 
 }
+
+
 
 
 
@@ -86,6 +141,8 @@ background:#202c33;
 
 
 
+
+
 .input-area input{
 
 flex:1;
@@ -93,8 +150,11 @@ padding:12px;
 border:none;
 border-radius:20px;
 outline:none;
+font-size:15px;
 
 }
+
+
 
 
 
@@ -107,52 +167,93 @@ color:white;
 border-radius:50%;
 width:45px;
 height:45px;
+font-size:18px;
 
 }
 
 
+
 </style>
 
+
 </head>
+
 
 
 
 <body>
 
 
+
+
 <div class="chat-app">
+
+
+
 
 
 
 <div class="header">
 
+
+
+<div class="back"
+
+onclick="history.back()">
+
+←
+
+</div>
+
+
+
+
+
 <img
+
 id="chatImage"
+
 src="../assets/default-avatar.png"
-style="
-width:45px;
-height:45px;
-border-radius:50%;
-object-fit:cover;
-">
+
+class="avatar"
+
+>
 
 
-<div>
+
+
+
+<div class="profile-info">
+
+
 
 <h3 id="chatName">
+
 Chat
+
 </h3>
 
 
+
+
 <small id="chatStatus">
+
 Offline
+
 </small>
 
 
+
 </div>
 
 
+
+
 </div>
+
+
+
+
 
 
 
@@ -171,22 +272,85 @@ Loading messages...
 
 
 
+
+
+
 <div class="input-area">
 
 
-<input id="messageInput" placeholder="Type a message">
+<input
+
+id="messageInput"
+
+placeholder="Type a message"
+
+>
+
 
 
 <button id="sendBtn">
+
 ➤
+
 </button>
 
 
+
+</div>
+
+
+
+
+
+
+
 </div>
 
 
 
-</div>
+
+
+
+
+
+<script type="module">
+
+
+const chatName =
+
+sessionStorage.getItem("chatUserName");
+
+
+
+const chatImage =
+
+sessionStorage.getItem("chatUserImage");
+
+
+
+
+
+if(chatName){
+
+document.getElementById("chatName").innerText = chatName;
+
+}
+
+
+
+
+
+if(chatImage){
+
+document.getElementById("chatImage").src = chatImage;
+
+}
+
+
+
+
+</script>
+
 
 
 
