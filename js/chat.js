@@ -1,18 +1,25 @@
 // ===================================
-// ZSWAP PLUS - CHAT WITH SEEN STATUS
+// ZSWAP PLUS - CHAT WITH PROFILE HEADER
 // ===================================
+
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
+
 onAuthStateChanged
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+
 import {
+
 collection,
 addDoc,
 query,
@@ -20,25 +27,44 @@ orderBy,
 onSnapshot,
 serverTimestamp,
 doc,
-updateDoc
+updateDoc,
+getDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
 
 
 
 const messagesBox =
 document.getElementById("messages");
 
+
 const messageInput =
 document.getElementById("messageInput");
+
 
 const sendBtn =
 document.getElementById("sendBtn");
 
 
+
 const chatName =
 document.getElementById("chatName");
+
+
+const chatImage =
+document.getElementById("chatImage");
+
+
+const chatStatus =
+document.getElementById("chatStatus");
+
+
 
 
 
@@ -46,8 +72,10 @@ const receiverId =
 sessionStorage.getItem("chatUserId");
 
 
+
 const receiverName =
 sessionStorage.getItem("chatUserName");
+
 
 
 chatName.innerText =
@@ -59,24 +87,72 @@ let currentUserId;
 
 
 
-onAuthStateChanged(auth,(user)=>{
+
+
+onAuthStateChanged(auth, async(user)=>{
 
 
 if(!user){
 
+
 window.location.href="../auth/login.html";
 
+
 return;
+
 
 }
 
 
+
 currentUserId = user.uid;
+
+
+
+// Load receiver profile
+
+const userSnap = await getDoc(
+
+doc(db,"users",receiverId)
+
+);
+
+
+
+if(userSnap.exists()){
+
+
+const data = userSnap.data();
+
+
+
+chatName.innerText =
+data.name;
+
+
+
+chatImage.src =
+data.photoURL ||
+"../assets/default-avatar.png";
+
+
+
+chatStatus.innerText =
+data.online ? "🟢 Online" : "⚫ Offline";
+
+
+}
+
+
 
 loadMessages();
 
 
+
 });
+
+
+
 
 
 
@@ -123,7 +199,18 @@ msg.receiverId === currentUserId)
 
 
 
-if(msg.receiverId === currentUserId && !msg.seen){
+// Mark received messages as seen
+
+if(
+
+msg.receiverId === currentUserId
+
+&&
+
+!msg.seen
+
+){
+
 
 
 await updateDoc(
@@ -140,6 +227,7 @@ seen:true
 
 
 }
+
 
 
 
@@ -173,7 +261,8 @@ ${msg.text}
 
 <small>
 
-${msg.senderId === currentUserId
+${
+msg.senderId === currentUserId
 
 ?
 
@@ -188,8 +277,6 @@ ${msg.senderId === currentUserId
 </small>
 
 `;
-
-
 
 
 
@@ -221,7 +308,9 @@ messagesBox.scrollHeight;
 
 
 
-sendBtn.addEventListener("click",async()=>{
+
+
+sendBtn.addEventListener("click", async()=>{
 
 
 const text =
@@ -229,7 +318,7 @@ messageInput.value.trim();
 
 
 
-if(text==="") return;
+if(text === "") return;
 
 
 
@@ -255,7 +344,8 @@ createdAt:serverTimestamp()
 
 
 
-messageInput.value="";
+messageInput.value = "";
+
 
 
 });
