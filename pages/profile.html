@@ -4,11 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ZSwap Profile</title>
+<title>ZSwap Plus Profile</title>
+
 
 <link rel="stylesheet" href="../css/auth.css">
+
 
 </head>
 
@@ -23,32 +26,40 @@
 
 
 <div class="logo">
+
 Z+
+
 </div>
 
 
 
 <h1>
-Welcome to ZSwap Plus
+ZSwap Plus
 </h1>
 
 
 
 <h2 id="userName">
+
 Loading...
+
 </h2>
 
 
 
 <p id="userEmail">
+
 Loading...
+
 </p>
 
 
 
 
 <button id="logoutBtn">
+
 Logout
+
 </button>
 
 
@@ -61,24 +72,11 @@ Logout
 
 
 
+
 <script type="module">
 
 
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
-
-
-import {
-
-doc,
-
-getDoc
-
-}
-
-from
-
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 
 
 import {
@@ -95,14 +93,42 @@ from
 
 
 
+import {
+
+doc,
+
+getDoc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-const nameBox =
+
+
+
+
+
+const userName =
+
 document.getElementById("userName");
 
 
-const emailBox =
+
+const userEmail =
+
 document.getElementById("userEmail");
+
+
+
+const logoutBtn =
+
+document.getElementById("logoutBtn");
+
+
+
 
 
 
@@ -115,26 +141,32 @@ if(user){
 
 
 
-emailBox.innerText =
-user.email;
+userEmail.innerText = user.email;
 
 
 
 
-const userDoc = await getDoc(
+const userRef =
 
-doc(db,"users",user.uid)
-
-);
+doc(db,"users",user.uid);
 
 
 
-if(userDoc.exists()){
+
+const userSnap =
+
+await getDoc(userRef);
 
 
-nameBox.innerText =
 
-userDoc.data().name;
+
+
+if(userSnap.exists()){
+
+
+userName.innerText =
+
+userSnap.data().name;
 
 
 }
@@ -142,11 +174,13 @@ userDoc.data().name;
 else{
 
 
-nameBox.innerText =
-"ZSwap User";
+userName.innerText =
+
+"User";
 
 
 }
+
 
 
 
@@ -156,6 +190,7 @@ else{
 
 
 window.location.href =
+
 "../auth/login.html";
 
 
@@ -170,15 +205,18 @@ window.location.href =
 
 
 
-document.getElementById("logoutBtn")
-.addEventListener("click", async()=>{
+
+logoutBtn.addEventListener("click", async()=>{
 
 
 await signOut(auth);
 
 
+
 window.location.href =
+
 "../auth/login.html";
+
 
 
 });
@@ -190,5 +228,6 @@ window.location.href =
 
 
 </body>
+
 
 </html>
