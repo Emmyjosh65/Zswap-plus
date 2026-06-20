@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Edit Profile - ZSwap Plus</title>
+
+<link rel="stylesheet" href="../css/auth.css">
+
+<style>
+
+body{
+margin:0;
+background:#0b141a;
+color:white;
+font-family:Poppins,Arial,sans-serif;
+}
+
+
+.container{
+
+padding:20px;
+
+}
+
+
+.card{
+
+background:#202c33;
+
+padding:25px;
+
+border-radius:15px;
+
+text-align:center;
+
+}
+
+
+
+img{
+
+width:100px;
+
+height:100px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+}
+
+
+
+input{
+
+width:90%;
+
+padding:15px;
+
+margin:10px;
+
+border-radius:10px;
+
+border:none;
+
+outline:none;
+
+}
+
+
+
+button{
+
+width:90%;
+
+padding:15px;
+
+border:none;
+
+border-radius:25px;
+
+background:#25d366;
+
+color:white;
+
+font-size:16px;
+
+margin-top:15px;
+
+}
+
+
+
+.avatar-options img{
+
+width:60px;
+
+height:60px;
+
+margin:10px;
+
+cursor:pointer;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<div class="card">
+
+
+<h2>Edit Profile</h2>
+
+
+
+<img id="profileImage"
+src="../assets/default-avatar.png">
+
+
+
+<div class="avatar-options">
+
+
+<img onclick="changeAvatar('../assets/default-avatar.png')" 
+src="../assets/default-avatar.png">
+
+
+
+</div>
+
+
+
+<input 
+id="name"
+placeholder="Your name">
+
+
+
+<button id="saveBtn">
+
+Save Profile
+
+</button>
+
+
+
+</div>
+
+
+</div>
+
+
+
+<script type="module" src="../js/edit-profile.js"></script>
+
+
+</body>
+
+</html>
