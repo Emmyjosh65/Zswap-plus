@@ -1,6 +1,6 @@
 // ===================================
 // ZSWAP PLUS - CHAT SYSTEM
-// PROFILE + ONLINE + TYPING + SEEN + NOTIFICATIONS
+// PROFILE + ONLINE + TYPING + SEEN + TIME
 // ===================================
 
 
@@ -53,7 +53,6 @@ const sendBtn =
 document.getElementById("sendBtn");
 
 
-
 const chatName =
 document.getElementById("chatName");
 
@@ -78,12 +77,25 @@ sessionStorage.getItem("chatUserName");
 
 
 
+if(!receiverId){
+
+alert("No chat selected");
+
+window.location.href="chats.html";
+
+}
+
+
+
 chatName.innerText =
 receiverName || "Chat";
 
 
 
-let currentUserId;
+let currentUserId = "";
+
+
+
 
 
 
@@ -91,6 +103,7 @@ let currentUserId;
 
 
 onAuthStateChanged(auth, async(user)=>{
+
 
 
 if(!user){
@@ -108,13 +121,14 @@ currentUserId = user.uid;
 
 
 
-// Load receiver profile
 
 const userSnap = await getDoc(
 
 doc(db,"users",receiverId)
 
 );
+
+
 
 
 
@@ -126,18 +140,24 @@ const data = userSnap.data();
 
 
 chatName.innerText =
-data.name;
+
+data.name || "User";
+
 
 
 
 chatImage.src =
+
 data.photoURL ||
 
 "../assets/default-avatar.png";
 
 
 
+
+
 chatStatus.innerText =
+
 data.online
 
 ?
@@ -149,6 +169,7 @@ data.online
 "⚫ Offline";
 
 
+
 }
 
 
@@ -156,7 +177,7 @@ data.online
 
 
 
-// Listen for typing
+// Typing listener
 
 onSnapshot(
 
@@ -165,15 +186,15 @@ doc(db,"users",receiverId),
 (snapshot)=>{
 
 
+
 const data = snapshot.data();
 
 
 
-if(data && data.typing){
+if(data?.typing){
 
 
-chatStatus.innerText =
-"typing...";
+chatStatus.innerText="typing...";
 
 
 }
@@ -183,7 +204,7 @@ else{
 
 chatStatus.innerText =
 
-data && data.online
+data?.online
 
 ?
 
@@ -197,9 +218,11 @@ data && data.online
 }
 
 
+
 }
 
 );
+
 
 
 
@@ -210,7 +233,6 @@ loadMessages();
 
 
 });
-
 
 
 
@@ -236,56 +258,49 @@ orderBy("createdAt","asc")
 
 
 
+
 onSnapshot(messagesQuery,(snapshot)=>{
 
 
-messagesBox.innerHTML = "";
+
+messagesBox.innerHTML="";
+
+
 
 
 
 snapshot.forEach(async(docSnap)=>{
 
 
-const msg =
-docSnap.data();
+
+const msg = docSnap.data();
+
 
 
 
 
 if(
 
-
-(msg.senderId === currentUserId &&
-
-msg.receiverId === receiverId)
-
+(msg.senderId === currentUserId && msg.receiverId === receiverId)
 
 ||
 
+(msg.senderId === receiverId && msg.receiverId === currentUserId)
 
-(msg.senderId === receiverId &&
+)
 
-msg.receiverId === currentUserId)
-
-
-){
+{
 
 
 
-
-
-// Mark message as seen
 
 
 if(
 
-msg.receiverId === currentUserId
-
-&&
-
-!msg.seen
+msg.receiverId === currentUserId && !msg.seen
 
 ){
+
 
 
 await updateDoc(
@@ -309,13 +324,12 @@ seen:true
 
 
 
-const div =
-document.createElement("div");
+const div = document.createElement("div");
 
 
 
-div.className =
-"message";
+div.className="message";
+
 
 
 
@@ -332,44 +346,68 @@ div.classList.add("my-message");
 
 
 
+
+
+let time = "";
+
+
+
+if(msg.createdAt){
+
+
+time = msg.createdAt.toDate()
+
+.toLocaleTimeString([],{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+});
+
+
+}
+
+
+
+
+
+
 div.innerHTML = `
 
 
+<div>
+
 ${msg.text}
 
-
-<br>
+</div>
 
 
 <small>
 
+${time}
 
 ${
 
 msg.senderId === currentUserId
 
-
 ?
-
 
 (msg.seen
 
 ?
 
-"✓✓ Seen"
+" ✓✓"
 
 :
 
-"✓ Sent")
-
+" ✓")
 
 :
 
 ""
 
-
 }
-
 
 </small>
 
@@ -380,7 +418,11 @@ msg.senderId === currentUserId
 
 
 
+
+
 messagesBox.appendChild(div);
+
+
 
 
 
@@ -389,6 +431,8 @@ messagesBox.appendChild(div);
 
 
 });
+
+
 
 
 
@@ -412,10 +456,8 @@ messagesBox.scrollHeight;
 
 
 
-// SEND MESSAGE + CREATE NOTIFICATION
+async function sendMessage(){
 
-
-sendBtn.addEventListener("click", async()=>{
 
 
 const text =
@@ -425,7 +467,9 @@ messageInput.value.trim();
 
 
 
-if(text === "") return;
+
+if(text==="") return;
+
 
 
 
@@ -462,9 +506,6 @@ createdAt:serverTimestamp()
 
 
 
-// Create notification
-
-
 await addDoc(
 
 collection(db,"notifications"),
@@ -478,7 +519,7 @@ userId:receiverId,
 title:"New Message",
 
 
-message:"Someone sent you a message",
+message:"You received a new message",
 
 
 createdAt:serverTimestamp()
@@ -492,34 +533,71 @@ createdAt:serverTimestamp()
 
 
 
-messageInput.value = "";
+messageInput.value="";
 
 
 
-});
-
-
-
-
+}
 
 
 
 
 
 
-// Typing indicator
-
-
-messageInput.addEventListener("input",async()=>{
-
-
-const user =
-
-auth.currentUser;
 
 
 
-if(!user) return;
+sendBtn.addEventListener(
+
+"click",
+
+sendMessage
+
+);
+
+
+
+
+
+messageInput.addEventListener(
+
+"keypress",
+
+(e)=>{
+
+
+if(e.key==="Enter"){
+
+sendMessage();
+
+}
+
+
+}
+
+);
+
+
+
+
+
+
+
+
+
+messageInput.addEventListener(
+
+"input",
+
+async()=>{
+
+
+
+const user = auth.currentUser;
+
+
+
+if(!user)return;
 
 
 
@@ -538,6 +616,7 @@ typing:true
 }
 
 );
+
 
 
 
@@ -567,4 +646,8 @@ typing:false
 
 
 
-});
+
+
+}
+
+);
