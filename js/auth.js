@@ -1,3 +1,4 @@
+alert("ZSwap auth.js is running");
 // ===================================
 // ZSWAP PLUS - FIREBASE PHONE LOGIN
 // ===================================
