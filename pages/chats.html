@@ -8,39 +8,62 @@
 
 <title>ZSwap Plus Chats</title>
 
-<link rel="stylesheet" href="../css/auth.css">
 
 <style>
 
 body{
+
 margin:0;
 background:#0b141a;
 color:white;
 font-family:Poppins,Arial,sans-serif;
+
 }
+
+
 
 .app{
+
 min-height:100vh;
 padding-bottom:80px;
+
 }
 
+
+
+
 .header{
+
 background:#202c33;
 padding:20px;
 display:flex;
 align-items:center;
 gap:15px;
+
 }
 
+
+
 .logo{
+
 font-size:28px;
 font-weight:bold;
 color:#25d366;
+
 }
 
+
+
+
 .user-list{
+
 padding:10px;
+
 }
+
+
+
+
 
 .user-card{
 
@@ -55,21 +78,61 @@ cursor:pointer;
 
 }
 
+
+
+
 .avatar{
 
-width:50px;
-height:50px;
+width:55px;
+height:55px;
 border-radius:50%;
+object-fit:cover;
 background:#25d366;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
 
 }
 
 
+
+
+.user-info{
+
+flex:1;
+
+}
+
+
+
+.username{
+
+font-size:17px;
+font-weight:bold;
+
+}
+
+
+
+.email{
+
+color:#aaa;
+font-size:13px;
+
+}
+
+
+
+.online{
+
+color:#25d366;
+font-size:12px;
+
+}
+
+
+
+
+
 .bottom-nav{
+
 
 position:fixed;
 bottom:0;
@@ -81,7 +144,9 @@ display:flex;
 justify-content:space-around;
 align-items:center;
 
+
 }
+
 
 
 .bottom-nav a{
@@ -92,6 +157,7 @@ font-size:12px;
 text-align:center;
 
 }
+
 
 
 .bottom-nav span{
@@ -107,31 +173,50 @@ font-size:22px;
 </head>
 
 
+
+
 <body>
+
 
 
 <div class="app">
 
 
+
 <div class="header">
 
+
 <div class="logo">
+
 Z+
+
 </div>
+
 
 <h2>
+
 Chats
+
 </h2>
 
+
+
 </div>
+
+
+
 
 
 
 <div id="userList" class="user-list">
 
+
 Loading users...
 
+
 </div>
+
+
 
 
 
@@ -141,44 +226,78 @@ Loading users...
 
 
 <a href="home.html">
+
 <span>🏠</span>
+
 Home
+
 </a>
+
 
 
 <a href="chats.html">
+
 <span>💬</span>
+
 Chats
+
 </a>
+
+
 
 
 <a href="status.html">
+
 <span>⭕</span>
+
 Status
+
 </a>
+
+
 
 
 <a href="calls.html">
+
 <span>📞</span>
+
 Calls
+
 </a>
+
+
 
 
 <a href="settings.html">
+
 <span>⚙️</span>
+
 Settings
+
 </a>
 
 
+
 </div>
 
 
+
+
+
 </div>
+
+
+
+
 
 
 
 <script type="module" src="../js/chats.js"></script>
+
+
 <script type="module" src="../js/status-online.js"></script>
+
+
 
 </body>
 
