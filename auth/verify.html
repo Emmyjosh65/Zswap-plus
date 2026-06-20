@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,58 +12,97 @@
 
 </head>
 
+
 <body>
+
 
 <div class="login-container">
 
+
 <div class="login-card">
+
 
 <div class="logo">
 Z+
 </div>
 
+
 <h1>Verify Number</h1>
+
 
 <p>
 Enter the verification code sent to your phone
 </p>
 
 
+
 <form id="verifyForm">
+
+
 
 <div class="input-group">
 
-<label>Verification Code</label>
+<label>
+Verification Code
+</label>
 
-<input 
+
+<input
 type="number"
 id="otp"
 placeholder="123456"
 required>
 
+
 </div>
+
 
 
 <button type="submit">
 Verify
 </button>
 
+
+
 </form>
 
 
 </div>
 
+
 </div>
 
 
-<script>
 
-document.getElementById("verifyForm")
-.addEventListener("submit", function(e){
+
+<script type="module">
+
+
+import { auth } from "../firebase/firebase.js";
+
+
+import {
+    PhoneAuthProvider,
+    signInWithCredential
+} from 
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+
+const form = document.getElementById("verifyForm");
+
+
+
+form.addEventListener("submit", async (e)=>{
+
 
 e.preventDefault();
 
-let otp = document.getElementById("otp").value;
+
+
+const otp =
+document.getElementById("otp").value;
+
 
 
 if(otp.length !== 6){
@@ -73,15 +114,51 @@ return;
 }
 
 
-// Continue to profile
+
+try{
+
+
+const credential =
+PhoneAuthProvider.credential(
+window.verificationId,
+otp
+);
+
+
+
+await signInWithCredential(
+auth,
+credential
+);
+
+
+
+alert("Phone verified successfully");
+
+
 
 window.location.href="profile.html";
 
 
+
+}
+
+catch(error){
+
+
+alert(error.message);
+
+
+}
+
+
+
 });
+
 
 </script>
 
 
 </body>
+
 </html>
