@@ -18,6 +18,7 @@
 
 <div class="login-container">
 
+
 <div class="login-card">
 
 
@@ -26,101 +27,153 @@ Z+
 </div>
 
 
-<h1>Create Profile</h1>
+<h1>ZSwap Plus</h1>
 
-<p>
-Complete your ZSwap Plus account
+
+<h2 id="userName">
+Loading...
+</h2>
+
+
+<p id="userEmail">
+Loading...
 </p>
 
 
-<form id="profileForm">
-
-
-<div class="input-group">
-
-<label>Username</label>
-
-<input 
-type="text"
-id="username"
-placeholder="Enter username"
-required>
-
-</div>
-
-
-
-<div class="input-group">
-
-<label>Bio</label>
-
-<input 
-type="text"
-id="bio"
-placeholder="About you">
-
-</div>
-
-
-
-<div class="input-group">
-
-<label>Profile Picture URL</label>
-
-<input 
-type="text"
-id="photo"
-placeholder="Image link">
-
-</div>
-
-
-
-<button type="submit">
-Create Account
+<button id="logoutBtn">
+Logout
 </button>
 
 
-</form>
+</div>
 
 
 </div>
 
-</div>
 
 
 
-<script>
 
-document.getElementById("profileForm")
-.addEventListener("submit", function(e){
-
-e.preventDefault();
+<script type="module">
 
 
-localStorage.setItem(
-"zswapUser",
-JSON.stringify({
+import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-username:
-document.getElementById("username").value,
 
-bio:
-document.getElementById("bio").value,
+import {
 
-photo:
-document.getElementById("photo").value
+onAuthStateChanged,
+signOut
 
-})
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+import {
+
+doc,
+getDoc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+
+
+
+const userName = document.getElementById("userName");
+
+const userEmail = document.getElementById("userEmail");
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+
+
+
+
+onAuthStateChanged(auth, async(user)=>{
+
+
+if(user){
+
+
+userEmail.innerText = user.email;
+
+
+
+const userRef = doc(
+
+db,
+
+"users",
+
+user.uid
+
 );
 
 
-// Go to chats
 
-window.location.href="../pages/chats.html";
+const userSnap = await getDoc(userRef);
+
+
+
+
+
+if(userSnap.exists()){
+
+
+userName.innerText =
+
+userSnap.data().name;
+
+
+}
+
+else{
+
+
+userName.innerText = "ZSwap User";
+
+
+}
+
+
+
+}
+
+else{
+
+
+window.location.href = "../auth/login.html";
+
+
+}
+
 
 
 });
+
+
+
+
+
+logoutBtn.addEventListener("click", async()=>{
+
+
+await signOut(auth);
+
+
+window.location.href = "../auth/login.html";
+
+
+});
+
 
 
 </script>
