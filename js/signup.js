@@ -1,9 +1,9 @@
 // ===================================
-// ZSWAP PLUS - CREATE ACCOUNT
+// ZSWAP PLUS - SIGNUP WITH FIRESTORE
 // ===================================
 
 
-import { auth } from "/Zswap-plus/firebase/firebase.js";
+import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
 import {
@@ -17,11 +17,25 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+import {
+
+doc,
+
+setDoc
+
+}
+
+from
+
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
-const signupForm = 
-document.getElementById("signupForm");
+
+
+const signupForm = document.getElementById("signupForm");
+
+const signupBtn = document.getElementById("signupBtn");
 
 
 
@@ -34,9 +48,12 @@ e.preventDefault();
 
 
 
+
+
 const fullName =
 
 document.getElementById("fullName").value.trim();
+
 
 
 
@@ -46,15 +63,19 @@ document.getElementById("email").value.trim();
 
 
 
+
 const password =
 
 document.getElementById("password").value;
 
 
 
+
 const confirmPassword =
 
 document.getElementById("confirmPassword").value;
+
+
 
 
 
@@ -69,6 +90,8 @@ return;
 
 
 
+
+
 if(password.length < 6){
 
 alert("Password must be at least 6 characters");
@@ -80,8 +103,19 @@ return;
 
 
 
+
 try{
 
+
+signupBtn.innerText = "Creating...";
+
+
+
+
+
+// Create Firebase account
+
+const userCredential =
 
 await createUserWithEmailAndPassword(
 
@@ -95,29 +129,41 @@ password
 
 
 
-// Save user information
 
-sessionStorage.setItem(
 
-"zswapName",
+const user = userCredential.user;
 
-fullName
+
+
+
+
+// Save user profile in Firestore
+
+await setDoc(
+
+doc(db, "users", user.uid),
+
+{
+
+name: fullName,
+
+email: email,
+
+uid: user.uid,
+
+createdAt: new Date()
+
+}
 
 );
 
 
-
-sessionStorage.setItem(
-
-"zswapEmail",
-
-email
-
-);
 
 
 
 alert("ZSwap account created successfully");
+
+
 
 
 
@@ -127,9 +173,9 @@ window.location.href =
 
 
 
+
+
 }
-
-
 
 catch(error){
 
@@ -138,6 +184,11 @@ alert(error.message);
 
 
 }
+
+
+
+
+signupBtn.innerText = "Create Account";
 
 
 
