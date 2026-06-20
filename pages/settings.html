@@ -10,6 +10,7 @@
 
 <link rel="stylesheet" href="../css/auth.css">
 
+
 <style>
 
 body{
@@ -19,10 +20,12 @@ color:white;
 font-family:Poppins,Arial,sans-serif;
 }
 
+
 .app{
 min-height:100vh;
 padding-bottom:80px;
 }
+
 
 .header{
 background:#202c33;
@@ -32,80 +35,127 @@ align-items:center;
 gap:15px;
 }
 
+
 .logo{
 font-size:28px;
 font-weight:bold;
 color:#25d366;
 }
 
+
+
 .profile-card{
+
 margin:20px;
+
 background:#202c33;
+
 padding:25px;
+
 border-radius:15px;
+
 text-align:center;
+
 }
 
-.avatar{
-width:80px;
-height:80px;
+
+
+.profile-image{
+
+width:90px;
+
+height:90px;
+
 border-radius:50%;
-background:#25d366;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:35px;
-margin:auto;
+
+object-fit:cover;
+
 }
+
+
 
 .option{
+
 margin:15px 20px;
+
 padding:18px;
+
 background:#202c33;
+
 border-radius:12px;
+
 }
 
+
+
 button{
+
 width:90%;
+
 margin:20px;
+
 padding:15px;
+
 border:none;
+
 border-radius:25px;
+
 background:#25d366;
+
 color:white;
+
 font-size:16px;
+
 }
+
 
 
 .bottom-nav{
 
 position:fixed;
+
 bottom:0;
+
 left:0;
+
 width:100%;
+
 height:70px;
+
 background:#202c33;
+
 display:flex;
+
 justify-content:space-around;
+
 align-items:center;
 
 }
 
+
+
 .bottom-nav a{
 
 color:white;
+
 text-decoration:none;
+
 font-size:12px;
+
 text-align:center;
 
 }
 
+
+
 .bottom-nav span{
 
 display:block;
+
 font-size:22px;
 
 }
+
 
 </style>
 
@@ -116,6 +166,7 @@ font-size:22px;
 
 
 <div class="app">
+
 
 
 <div class="header">
@@ -137,22 +188,39 @@ Settings
 <div class="profile-card">
 
 
-<div class="avatar">
-👤
-</div>
+
+<img
+
+id="profileImage"
+
+src="../assets/default-avatar.png"
+
+class="profile-image"
+
+
+
+>
+
 
 
 <h2 id="userName">
+
 Loading...
+
 </h2>
 
 
+
 <p id="userEmail">
+
 Loading...
+
 </p>
 
 
+
 </div>
+
 
 
 
@@ -172,9 +240,14 @@ Loading...
 </div>
 
 
+
 <button id="logoutBtn">
+
 Logout
+
 </button>
+
+
 
 
 
@@ -184,40 +257,62 @@ Logout
 
 
 <a href="home.html">
+
 <span>🏠</span>
+
 Home
+
 </a>
+
 
 
 <a href="chats.html">
+
 <span>💬</span>
+
 Chats
+
 </a>
+
 
 
 <a href="status.html">
+
 <span>⭕</span>
+
 Status
+
 </a>
+
 
 
 <a href="calls.html">
+
 <span>📞</span>
+
 Calls
+
 </a>
+
 
 
 <a href="settings.html">
+
 <span>⚙️</span>
+
 Settings
+
 </a>
 
 
+
+</div>
+
+
+
 </div>
 
 
-
-</div>
 
 
 
@@ -229,54 +324,106 @@ Settings
 import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
 
+
 import {
+
 onAuthStateChanged,
+
 signOut
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
+
 import {
+
 doc,
+
 getDoc
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
 
+
+
 const userName =
+
 document.getElementById("userName");
 
 
+
 const userEmail =
+
 document.getElementById("userEmail");
+
+
+
+const profileImage =
+
+document.getElementById("profileImage");
+
+
+
 
 
 
 onAuthStateChanged(auth, async(user)=>{
 
 
+
 if(user){
+
 
 
 userEmail.innerText = user.email;
 
 
 
+
 const userSnap = await getDoc(
+
 doc(db,"users",user.uid)
+
 );
+
+
 
 
 
 if(userSnap.exists()){
 
-userName.innerText =
-userSnap.data().name;
+
+
+const data = userSnap.data();
+
+
+
+userName.innerText = data.name;
+
+
+
+if(data.photoURL){
+
+
+profileImage.src = data.photoURL;
+
 
 }
+
+
+
+}
+
+
 
 
 
@@ -284,31 +431,43 @@ userSnap.data().name;
 
 else{
 
+
 window.location.href="../auth/login.html";
+
 
 }
 
 
+
 });
+
+
+
 
 
 
 
 
 document.getElementById("logoutBtn")
+
 .addEventListener("click", async()=>{
+
 
 
 await signOut(auth);
 
 
+
 window.location.href="../auth/login.html";
+
 
 
 });
 
 
+
 </script>
+
 
 
 </body>
