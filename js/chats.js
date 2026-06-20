@@ -1,5 +1,5 @@
 // ===================================
-// ZSWAP PLUS - LOAD USERS FOR CHATS
+// ZSWAP PLUS - CHATS WITH ONLINE STATUS
 // ===================================
 
 
@@ -20,7 +20,9 @@ from
 import {
 
 collection,
-getDocs
+getDocs,
+doc,
+getDoc
 
 }
 
@@ -55,10 +57,6 @@ return;
 
 
 
-
-try{
-
-
 const usersSnapshot = await getDocs(
 
 collection(db,"users")
@@ -73,22 +71,36 @@ userList.innerHTML = "";
 
 
 
-usersSnapshot.forEach((userDoc)=>{
+for(const userDoc of usersSnapshot.docs){
+
 
 
 const user = userDoc.data();
 
 
 
-
-
-// Don't show yourself
-
 if(user.uid === currentUser.uid){
 
-return;
+continue;
 
 }
+
+
+
+const statusSnap = await getDoc(
+
+doc(db,"users",user.uid)
+
+);
+
+
+
+const data = statusSnap.data();
+
+
+
+const status =
+data.online ? "🟢 Online" : "⚫ Offline";
 
 
 
@@ -98,13 +110,14 @@ const userCard = document.createElement("div");
 
 
 
-userCard.className = "user-card";
+userCard.className="user-card";
 
 
 
 
 
 userCard.innerHTML = `
+
 
 <div class="avatar">
 
@@ -113,13 +126,15 @@ userCard.innerHTML = `
 </div>
 
 
+
 <div>
 
 <h3>${user.name}</h3>
 
-<p>${user.email}</p>
+<p>${status}</p>
 
 </div>
+
 
 `;
 
@@ -161,33 +176,6 @@ window.location.href="chat.html";
 
 userList.appendChild(userCard);
 
-
-
-});
-
-
-
-
-
-if(userList.innerHTML === ""){
-
-
-userList.innerHTML =
-
-"<p>No other users found</p>";
-
-
-}
-
-
-
-}
-
-
-catch(error){
-
-
-userList.innerHTML = error.message;
 
 
 }
