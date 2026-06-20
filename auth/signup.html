@@ -1,106 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
+// ===================================
+// ZSWAP PLUS - SIGNUP WITH FIRESTORE
+// ===================================
 
-<head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+import { auth, db } from "/Zswap-plus/firebase/firebase.js";
 
-<title>Create ZSwap Account</title>
 
-<link rel="stylesheet" href="../css/auth.css">
+import {
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+createUserWithEmailAndPassword
 
-</head>
+}
 
-<body>
+from
 
-<div class="login-container">
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-<div class="login-card">
 
-<div class="logo">
-Z+
-</div>
+import {
 
-<h1>Create Account</h1>
+doc,
 
-<p>
-Join ZSwap Plus
-</p>
+setDoc
 
-<form id="signupForm">
+}
 
-<div class="input-group">
+from
 
-<label>Full Name</label>
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<input
-type="text"
-id="fullName"
-placeholder="Your Name"
-required>
 
-</div>
 
-<div class="input-group">
 
-<label>Email Address</label>
 
-<input
-type="email"
-id="email"
-placeholder="example@gmail.com"
-required>
+const signupForm = document.getElementById("signupForm");
 
-</div>
 
-<div class="input-group">
 
-<label>Password</label>
 
-<input
-type="password"
-id="password"
-placeholder="Create Password"
-required>
 
-</div>
+signupForm.addEventListener("submit", async (e)=>{
 
-<div class="input-group">
 
-<label>Confirm Password</label>
+e.preventDefault();
 
-<input
-type="password"
-id="confirmPassword"
-placeholder="Confirm Password"
-required>
 
-</div>
 
-<button id="signupBtn" type="submit">
-Create Account
-</button>
+const fullName =
 
-</form>
+document.getElementById("fullName").value.trim();
 
-<p class="terms">
 
-Already have an account?
 
-<a href="login.html">
-Login
-</a>
+const email =
 
-</p>
+document.getElementById("email").value.trim();
 
-</div>
 
-</div>
 
-<script type="module" src="/Zswap-plus/js/signup.js"></script>
+const password =
 
-</body>
-</html>
+document.getElementById("password").value;
+
+
+
+const confirmPassword =
+
+document.getElementById("confirmPassword").value;
+
+
+
+
+
+if(password !== confirmPassword){
+
+alert("Passwords do not match");
+
+return;
+
+}
+
+
+
+if(password.length < 6){
+
+alert("Password must be at least 6 characters");
+
+return;
+
+}
+
+
+
+
+
+try{
+
+
+// Create account
+
+const userCredential =
+
+await createUserWithEmailAndPassword(
+
+auth,
+
+email,
+
+password
+
+);
+
+
+
+const user = userCredential.user;
+
+
+
+
+
+// Save user profile in Firestore
+
+await setDoc(
+
+doc(db, "users", user.uid),
+
+{
+
+name: fullName,
+
+email: email,
+
+createdAt: new Date()
+
+}
+
+);
+
+
+
+
+
+alert("ZSwap account created successfully");
+
+
+
+window.location.href =
+
+"../pages/profile.html";
+
+
+
+}
+
+
+
+catch(error){
+
+
+alert(error.message);
+
+
+}
+
+
+
+});
