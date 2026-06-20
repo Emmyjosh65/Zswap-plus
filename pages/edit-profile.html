@@ -8,15 +8,16 @@
 
 <title>Edit Profile - ZSwap Plus</title>
 
-<link rel="stylesheet" href="../css/auth.css">
 
 <style>
 
 body{
+
 margin:0;
 background:#0b141a;
 color:white;
 font-family:Poppins,Arial,sans-serif;
+
 }
 
 
@@ -27,47 +28,61 @@ padding:20px;
 }
 
 
-.card{
+
+.header{
 
 background:#202c33;
-
-padding:25px;
-
+padding:20px;
 border-radius:15px;
-
-text-align:center;
 
 }
 
 
 
-img{
+.profile-box{
+
+background:#202c33;
+margin-top:20px;
+padding:20px;
+border-radius:15px;
+
+}
+
+
+
+.avatar{
 
 width:100px;
-
 height:100px;
-
 border-radius:50%;
-
+background:#25d366;
+display:block;
+margin:auto;
 object-fit:cover;
 
 }
 
 
 
-input{
+input, textarea{
 
-width:90%;
-
+width:100%;
+box-sizing:border-box;
+margin-top:15px;
 padding:15px;
-
-margin:10px;
-
-border-radius:10px;
-
+background:#111b21;
 border:none;
+border-radius:10px;
+color:white;
+font-size:15px;
 
-outline:none;
+}
+
+
+
+textarea{
+
+height:100px;
 
 }
 
@@ -75,78 +90,121 @@ outline:none;
 
 button{
 
-width:90%;
-
+width:100%;
+margin-top:20px;
 padding:15px;
-
 border:none;
-
 border-radius:25px;
-
 background:#25d366;
-
 color:white;
-
 font-size:16px;
 
-margin-top:15px;
-
 }
 
 
 
-.avatar-options img{
+.back{
 
-width:60px;
-
-height:60px;
-
-margin:10px;
-
-cursor:pointer;
+color:white;
+text-decoration:none;
 
 }
-
 
 
 </style>
 
+
 </head>
+
+
 
 
 <body>
 
 
+
 <div class="container">
 
 
-<div class="card">
+
+<div class="header">
 
 
-<h2>Edit Profile</h2>
+<a class="back" href="settings.html">
+
+← Back
+
+</a>
 
 
+<h2>
 
-<img id="profileImage"
-src="../assets/default-avatar.png">
+Edit Profile
 
-
-
-<div class="avatar-options">
-
-
-<img onclick="changeAvatar('../assets/default-avatar.png')" 
-src="../assets/default-avatar.png">
-
+</h2>
 
 
 </div>
 
 
 
-<input 
+
+
+
+
+<div class="profile-box">
+
+
+
+<img
+
+id="profileImage"
+
+src="../assets/default-avatar.png"
+
+class="avatar"
+
+>
+
+
+
+
+
+<input
+
 id="name"
-placeholder="Your name">
+
+placeholder="Full name"
+
+>
+
+
+
+
+
+<input
+
+id="username"
+
+placeholder="Username"
+
+>
+
+
+
+
+
+<textarea
+
+id="bio"
+
+placeholder="About you"
+
+></textarea>
+
+
+
+
 
 
 
@@ -158,14 +216,27 @@ Save Profile
 
 
 
-</div>
 
 
 </div>
 
 
 
-<script type="module" src="../js/edit-profile.js"></script>
+
+</div>
+
+
+
+
+
+
+
+<script type="module"
+
+src="../js/edit-profile.js">
+
+</script>
+
 
 
 </body>
