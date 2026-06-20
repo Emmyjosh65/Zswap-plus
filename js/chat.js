@@ -1,5 +1,5 @@
 // ===================================
-// ZSWAP PLUS - CHAT WITH PROFILE HEADER
+// ZSWAP PLUS - FULL CHAT SYSTEM
 // ===================================
 
 
@@ -15,7 +15,6 @@ onAuthStateChanged
 from
 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
 
 
 import {
@@ -52,7 +51,6 @@ const sendBtn =
 document.getElementById("sendBtn");
 
 
-
 const chatName =
 document.getElementById("chatName");
 
@@ -70,7 +68,6 @@ document.getElementById("chatStatus");
 
 const receiverId =
 sessionStorage.getItem("chatUserId");
-
 
 
 const receiverName =
@@ -94,12 +91,9 @@ onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
 
-
 window.location.href="../auth/login.html";
 
-
 return;
-
 
 }
 
@@ -109,7 +103,7 @@ currentUserId = user.uid;
 
 
 
-// Load receiver profile
+// Load user profile
 
 const userSnap = await getDoc(
 
@@ -138,10 +132,56 @@ data.photoURL ||
 
 
 chatStatus.innerText =
-data.online ? "🟢 Online" : "⚫ Offline";
+data.online
+?
+"🟢 Online"
+:
+"⚫ Offline";
 
 
 }
+
+
+
+// Listen for typing
+
+onSnapshot(
+
+doc(db,"users",receiverId),
+
+(snapshot)=>{
+
+
+const data = snapshot.data();
+
+
+
+if(data && data.typing){
+
+
+chatStatus.innerText =
+"typing...";
+
+
+}
+
+else{
+
+
+chatStatus.innerText =
+data && data.online
+?
+"🟢 Online"
+:
+"⚫ Offline";
+
+
+}
+
+
+}
+
+);
 
 
 
@@ -199,7 +239,7 @@ msg.receiverId === currentUserId)
 
 
 
-// Mark received messages as seen
+// Mark message as seen
 
 if(
 
@@ -237,7 +277,8 @@ document.createElement("div");
 
 
 
-div.className="message";
+div.className =
+"message";
 
 
 
@@ -266,7 +307,11 @@ msg.senderId === currentUserId
 
 ?
 
-(msg.seen ? "✓✓ Seen" : "✓ Sent")
+(msg.seen
+?
+"✓✓ Seen"
+:
+"✓ Sent")
 
 :
 
@@ -277,6 +322,8 @@ msg.senderId === currentUserId
 </small>
 
 `;
+
+
 
 
 
@@ -309,6 +356,8 @@ messagesBox.scrollHeight;
 
 
 
+
+// Send message
 
 sendBtn.addEventListener("click", async()=>{
 
@@ -344,7 +393,67 @@ createdAt:serverTimestamp()
 
 
 
-messageInput.value = "";
+messageInput.value="";
+
+
+
+});
+
+
+
+
+
+
+
+
+// Typing indicator
+
+messageInput.addEventListener("input",async()=>{
+
+
+const user =
+auth.currentUser;
+
+
+
+if(!user) return;
+
+
+
+await updateDoc(
+
+doc(db,"users",user.uid),
+
+{
+
+typing:true
+
+}
+
+);
+
+
+
+
+
+setTimeout(async()=>{
+
+
+await updateDoc(
+
+doc(db,"users",user.uid),
+
+{
+
+typing:false
+
+}
+
+);
+
+
+
+},1500);
 
 
 
