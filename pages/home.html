@@ -12,42 +12,32 @@
 <style>
 
 body{
-
 margin:0;
 background:#0b141a;
 color:white;
 font-family:Poppins,Arial,sans-serif;
-
 }
 
 
 .app{
-
 min-height:100vh;
 padding-bottom:90px;
-
 }
 
 
-
 .header{
-
 background:#202c33;
 padding:20px;
 display:flex;
 align-items:center;
 gap:15px;
-
 }
 
 
-
 .logo{
-
 font-size:30px;
 font-weight:bold;
 color:#25d366;
-
 }
 
 
@@ -73,6 +63,20 @@ object-fit:cover;
 
 }
 
+
+
+#userUsername{
+
+color:#25d366;
+}
+
+
+#userBio{
+
+color:#aaa;
+font-size:14px;
+
+}
 
 
 
@@ -104,7 +108,6 @@ display:block;
 font-size:35px;
 
 }
-
 
 
 
@@ -156,11 +159,9 @@ display:none;
 }
 
 
-
 </style>
 
 </head>
-
 
 
 
@@ -171,15 +172,10 @@ display:none;
 
 
 
-
-
 <div class="header">
 
-
 <div class="logo">
-
 Z+
-
 </div>
 
 
@@ -195,8 +191,8 @@ ZSwap Plus
 
 
 
-
 <div class="profile-card">
+
 
 
 <img
@@ -210,6 +206,8 @@ class="profile-image"
 >
 
 
+
+
 <h2>
 
 Hello,
@@ -221,6 +219,21 @@ User
 </span>
 
 </h2>
+
+
+
+
+<p id="userUsername">
+
+</p>
+
+
+
+<p id="userBio">
+
+</p>
+
+
 
 
 <p id="userEmail">
@@ -243,7 +256,6 @@ Loading...
 
 
 <div class="card"
-
 onclick="location.href='chats.html'">
 
 <span>
@@ -259,7 +271,6 @@ Chats
 
 
 <div class="card"
-
 onclick="location.href='contacts.html'">
 
 <span>
@@ -275,7 +286,6 @@ Contacts
 
 
 <div class="card"
-
 onclick="location.href='search-users.html'">
 
 <span>
@@ -291,7 +301,6 @@ Search Users
 
 
 <div class="card"
-
 onclick="location.href='notifications.html'">
 
 <span>
@@ -317,7 +326,6 @@ class="badge">
 
 
 <div class="card"
-
 onclick="location.href='settings.html'">
 
 <span>
@@ -331,8 +339,6 @@ Settings
 
 
 </div>
-
-
 
 
 
@@ -420,10 +426,6 @@ Settings
 
 
 
-
-
-
-
 </div>
 
 
@@ -467,24 +469,24 @@ from
 
 
 
-
-
 const userName =
-
 document.getElementById("userName");
 
 
+const userUsername =
+document.getElementById("userUsername");
+
+
+const userBio =
+document.getElementById("userBio");
+
 
 const userEmail =
-
 document.getElementById("userEmail");
 
 
-
 const profileImage =
-
 document.getElementById("profileImage");
-
 
 
 
@@ -508,13 +510,7 @@ return;
 
 
 
-
-
-userEmail.innerText =
-
-user.email;
-
-
+userEmail.innerText = user.email;
 
 
 
@@ -536,18 +532,41 @@ const data = snap.data();
 
 
 
+
 userName.innerText =
 
-data.name;
+data.name || "User";
+
+
+
+
+userUsername.innerText =
+
+data.username
+
+?
+
+"@" + data.username
+
+:
+
+"";
+
+
+
+
+userBio.innerText =
+
+data.bio || "No bio yet";
+
+
 
 
 
 if(data.photoURL){
 
 
-profileImage.src =
-
-data.photoURL;
+profileImage.src = data.photoURL;
 
 
 }
@@ -559,6 +578,8 @@ data.photoURL;
 
 
 });
+
+
 
 
 
