@@ -1,1 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZSwap Plus Login</title>
 
+<link rel="stylesheet" href="../css/auth.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            Z+
+        </div>
+
+        <h1>ZSwap Plus</h1>
+
+        <p>
+            Enter your phone number
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+
+                <label>Country</label>
+
+                <select id="countryCode">
+
+                    <option value="+234">
+                        🇳🇬 Nigeria (+234)
+                    </option>
+
+                    <option value="+1">
+                        🇺🇸 USA (+1)
+                    </option>
+
+                    <option value="+44">
+                        🇬🇧 UK (+44)
+                    </option>
+
+                    <option value="+91">
+                        🇮🇳 India (+91)
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Phone Number</label>
+
+                <input
+                type="tel"
+                id="phoneNumber"
+                placeholder="8012345678"
+                required>
+
+            </div>
+
+            <button type="submit">
+
+                Continue
+
+            </button>
+
+        </form>
+
+        <p class="terms">
+
+            By continuing you agree to
+            ZSwap Plus Terms of Service.
+
+        </p>
+
+    </div>
+
+</div>
+
+<script src="../js/auth.js"></script>
+
+</body>
+</html>
