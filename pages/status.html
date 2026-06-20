@@ -119,6 +119,7 @@ margin-right:5px;
 
 text-align:center;
 color:#aaa;
+margin-top:50px;
 
 }
 
@@ -265,6 +266,7 @@ Settings
 
 
 
+
 <script type="module">
 
 
@@ -280,6 +282,7 @@ onAuthStateChanged
 from
 
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 
 
 import {
@@ -299,6 +302,7 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+
 import {
 
 addReaction
@@ -315,6 +319,7 @@ from
 
 const statusList =
 document.getElementById("statusList");
+
 
 
 let currentUserId = null;
@@ -367,12 +372,35 @@ onSnapshot(statusQuery,(snapshot)=>{
 
 statusList.innerHTML="";
 
+let found = false;
+
 
 
 snapshot.forEach(async(statusDoc)=>{
 
 
 const data = statusDoc.data();
+
+
+
+// 24 hour expiry check
+
+const now = new Date();
+
+
+const expiry = data.expiresAt?.toDate();
+
+
+
+if(expiry && expiry < now){
+
+return;
+
+}
+
+
+
+found = true;
 
 
 
@@ -385,6 +413,9 @@ const views =
 data.views ? data.views.length : 0;
 
 
+
+
+// Add viewer
 
 if(
 
@@ -401,9 +432,7 @@ doc(db,"statuses",statusId),
 
 {
 
-
 views:arrayUnion(currentUserId)
-
 
 }
 
@@ -491,7 +520,6 @@ ${data.text}
 </button>
 
 
-
 </div>
 
 
@@ -501,10 +529,7 @@ ${data.text}
 
 
 
-
-card.querySelector(".love")
-
-.onclick = ()=>{
+card.querySelector(".love").onclick=()=>{
 
 addReaction(statusId,"❤️");
 
@@ -512,9 +537,7 @@ addReaction(statusId,"❤️");
 
 
 
-card.querySelector(".laugh")
-
-.onclick = ()=>{
+card.querySelector(".laugh").onclick=()=>{
 
 addReaction(statusId,"😂");
 
@@ -522,9 +545,7 @@ addReaction(statusId,"😂");
 
 
 
-card.querySelector(".fire")
-
-.onclick = ()=>{
+card.querySelector(".fire").onclick=()=>{
 
 addReaction(statusId,"🔥");
 
@@ -532,9 +553,7 @@ addReaction(statusId,"🔥");
 
 
 
-card.querySelector(".like")
-
-.onclick = ()=>{
+card.querySelector(".like").onclick=()=>{
 
 addReaction(statusId,"👍");
 
@@ -552,12 +571,30 @@ statusList.appendChild(card);
 
 
 
-});
 
+
+if(!found){
+
+
+statusList.innerHTML = `
+
+<p class="empty">
+
+No active statuses
+
+</p>
+
+`;
 
 }
 
 
+
+});
+
+
+
+}
 
 
 
