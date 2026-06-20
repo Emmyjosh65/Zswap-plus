@@ -1,45 +1,61 @@
 // ===================================
-// ZSWAP PLUS SIGNUP
+// ZSWAP PLUS - CREATE ACCOUNT
 // ===================================
+
 
 import { auth } from "/Zswap-plus/firebase/firebase.js";
 
+
 import {
+
 createUserWithEmailAndPassword
+
 }
+
 from
+
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
 
-const signupForm =
+
+
+const signupForm = 
 document.getElementById("signupForm");
 
 
 
+
+
 signupForm.addEventListener("submit", async (e)=>{
+
 
 e.preventDefault();
 
 
 
 const fullName =
+
 document.getElementById("fullName").value.trim();
 
 
 
 const email =
+
 document.getElementById("email").value.trim();
 
 
 
 const password =
+
 document.getElementById("password").value;
 
 
 
 const confirmPassword =
+
 document.getElementById("confirmPassword").value;
+
 
 
 
@@ -63,10 +79,9 @@ return;
 
 
 
+
 try{
 
-
-const userCredential =
 
 await createUserWithEmailAndPassword(
 
@@ -79,6 +94,8 @@ password
 );
 
 
+
+// Save user information
 
 sessionStorage.setItem(
 
@@ -100,22 +117,28 @@ email
 
 
 
-alert("Account created successfully");
+alert("ZSwap account created successfully");
 
 
 
 window.location.href =
+
 "../pages/profile.html";
 
 
 
 }
 
+
+
 catch(error){
+
 
 alert(error.message);
 
+
 }
+
 
 
 });
