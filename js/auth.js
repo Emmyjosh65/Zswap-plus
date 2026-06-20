@@ -1,7 +1,7 @@
 // ===================================
 // ZSWAP PLUS - FIREBASE PHONE LOGIN
 // ===================================
-
+console.log("ZSwap Firebase Auth Loaded");
 import { auth } from "../firebase/firebase.js";
 
 
