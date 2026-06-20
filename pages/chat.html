@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ZSwap Plus Chat</title>
+
+<link rel="stylesheet" href="../css/app.css">
+
+</head>
+
+
+<body>
+
+<div class="chat-page">
+
+
+<header class="chat-header">
+
+<a href="chats.html">
+←
+</a>
+
+<h2>Alex</h2>
+
+<button>
+☎
+</button>
+
+</header>
+
+
+
+<div class="messages" id="messages">
+
+
+<div class="message received">
+Hello 👋 Welcome to ZSwap Plus
+</div>
+
+
+<div class="message sent">
+Thanks! This looks great 🚀
+</div>
+
+
+</div>
+
+
+
+<form id="messageForm" class="message-box">
+
+
+<input 
+id="messageInput"
+type="text"
+placeholder="Type a message..."
+required>
+
+
+<button>
+Send
+</button>
+
+
+</form>
+
+
+
+</div>
+
+
+
+<script>
+
+const form =
+document.getElementById("messageForm");
+
+const input =
+document.getElementById("messageInput");
+
+const messages =
+document.getElementById("messages");
+
+
+form.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+
+let text = input.value;
+
+
+let msg = document.createElement("div");
+
+msg.className = "message sent";
+
+msg.innerText = text;
+
+
+messages.appendChild(msg);
+
+
+input.value="";
+
+
+});
+
+</script>
+
+
+</body>
+
+</html>
