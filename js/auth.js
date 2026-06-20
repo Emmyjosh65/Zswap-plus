@@ -20,15 +20,7 @@ from
 
 
 
-const loginForm =
-
-document.getElementById("loginForm");
-
-
-
-const loginBtn =
-
-document.getElementById("loginBtn");
+const loginForm = document.getElementById("loginForm");
 
 
 
@@ -42,9 +34,11 @@ e.preventDefault();
 
 
 
+
 const email =
 
 document.getElementById("email").value.trim();
+
 
 
 
@@ -59,10 +53,6 @@ document.getElementById("password").value;
 try{
 
 
-loginBtn.innerText = "Logging in...";
-
-
-
 await signInWithEmailAndPassword(
 
 auth,
@@ -72,6 +62,7 @@ email,
 password
 
 );
+
 
 
 
@@ -88,7 +79,6 @@ email
 
 
 
-// Show name from email until Firestore profile is added
 
 sessionStorage.setItem(
 
@@ -101,18 +91,24 @@ email.split("@")[0]
 
 
 
+
 alert("Login successful");
 
 
 
+
+
+// Go to ZSwap Plus home page
+
 window.location.href =
 
-"../pages/profile.html";
+"../pages/home.html";
+
+
 
 
 
 }
-
 
 
 catch(error){
@@ -121,12 +117,7 @@ catch(error){
 alert(error.message);
 
 
-
 }
-
-
-
-loginBtn.innerText = "Login";
 
 
 
